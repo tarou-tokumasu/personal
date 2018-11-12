@@ -1,0 +1,16 @@
+.signup{
+	width :100%;
+	max-width: 420px;
+	padding :30px;
+	margin: auto;
+}
+
+.waku {
+	
+	max-width: 800px;
+    position: relative;
+    padding: 1rem;
+    margin: auto;
+    border-width: .2rem 0 0;
+}
+
