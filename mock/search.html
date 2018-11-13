@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <title>メイン画面</title>
+    <!-- BootstrapのCSS読み込み -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery読み込み -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- BootstrapのJS読み込み -->
+    <script src="js/bootstrap.min.js"></script>
+	</head>
+<body class="backg">
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-light border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal">ECサイト</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2  href="#">ユーザー名さん</a>
+        <a class="p-2 text-dark" link href="userdetail.html">ユーザー情報</a>
+         <a class="p-2 text-dark" link href="userdetail.html">カートの確認</a>
+        <a class="p-2 text-dark"  link href="mylist.html">マイリスト</a>
+      </nav>
+      <a  class="text-danger" link href="login.html">ログアウト</a>
+    </div>
+<div class="container">
+
+  <div class="jumbotron">
+    <h5 class="text-center mt-3 mb-3">検索：〇〇</h5>
+
+<form class="text-right mb-2">
+ <select name="example">
+<option value="選択肢1">評価順</option>
+<option value="選択肢2">新着順</option>
+</select>
+</form>
+    <table class="table">
+  <thead class="thead-dark">
+    <tr class="text-center">
+      <th>商品名</th>
+      <th>価格</th>
+      <th>評価値</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+       <td> <a  class="text-dark" link href="itemdetail.html">商品A</a></td>
+      <td class="text-right">5,300円</td>
+      <td class="text-right">92%</td>
+    </tr>
+        <tr>
+       <td> 商品B</td>
+      <td class="text-right">2,100円</td>
+      <td class="text-right">64%</td>
+    </tr>
+    </table>
+    </div>
+    <div class="text-center">1 2 3 4 5 6 7 8 9 10</div>
+    <button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="index.html">戻る</button>
+</div>
+</body>
+</html>

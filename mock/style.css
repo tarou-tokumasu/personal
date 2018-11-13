@@ -6,7 +6,7 @@
 }
 
 .waku {
-	
+
 	max-width: 800px;
     position: relative;
     padding: 1rem;
@@ -14,3 +14,16 @@
     border-width: .2rem 0 0;
 }
 
+.waku2 {
+
+	max-width: 700px;
+    margin-left: auto;
+	margin-right: auto;
+}
+
+.backg{
+	 background: #304352;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right,#304352 , #d7d2cc);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #d7d2cc, #304352); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
