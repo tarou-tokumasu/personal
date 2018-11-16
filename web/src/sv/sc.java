@@ -23,4 +23,10 @@ public class sc {
 	static final String ITEM_LIST = "/WEB-INF/jsp/ad_itemlist.jsp";
 	//商品詳細
     static final String AD_ITEM_DETAIL =  "/WEB-INF/jsp/ad_itemdetail.jsp";
+    //商品追加
+    static final String AD_ADD_ITEM ="/WEB-INF/jsp/ad_additem.jsp";
+    //商品アプデ
+	static final String AD_ITEM_UPDATE = "/WEB-INF/jsp/ad_itemupdate.jsp";
+	//商品削除
+	static final String AD_ITEM_DELETE = "/WEB-INF/jsp/ad_itemdelete.jsp";
 }

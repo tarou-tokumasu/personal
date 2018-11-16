@@ -39,7 +39,7 @@
 		<input  class="mb-2 btn  btn-secondary" type="submit" value="検索">
 
 		</form>
-<button class="btn btn-secondary mt-3 mb-3" onclick="location.href='ad_additem.html'">新規登録</button>
+<button class="btn btn-secondary mt-3 mb-3" onclick="location.href='AddItem'">新規登録</button>
 		</div>
 
 

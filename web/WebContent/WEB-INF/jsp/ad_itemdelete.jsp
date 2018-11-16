@@ -28,10 +28,10 @@
 <div class="jumbotron mx-auto text-center">
 <h5 class="mb-3">ユーザー削除</h5>
 	<br>
-	${thisUser.login_id}<br>
-	<form action="UserDelete" method="post">
-	<input type="hidden" value="${thisUser.login_id}" name="login_ID">
-	<p class="p-2">このユーザーを削除します</p>
+	${thisItem.item_name}<br>
+	<form action="ItemDelete" method="post">
+	<input type="hidden" value="${thisItem.item_name}" name="item_name">
+	<p class="p-2">この商品を削除します</p>
         <input type="submit" class="btn secondary" value="OK" onclick="return confirm('本当に削除してよろしいですか？');">
 </form>
 

@@ -24,15 +24,26 @@ ${Err}
 </div>
 </c:if>
 <div class="jumbotron">
-        <h5 class="mb-3 text-center">ユーザー情報更新</h5>
-      <form action="UserUpdate" method="post">
-      <br><div class="ml-1">ユーザーID　${thisUser.login_id}</div><br>
-             <input type="hidden" class="form-control mb-3" value="${thisUser.login_id}" name="login_ID">
-       <input type="text" class="form-control mb-3" value="${thisUser.user_name}" name="user_name">
-      <input type="password" id="inputPassword" class="form-control mb-3" placeholder="パスワード変更したい場合は入力して下さい"  name="password">
-      <input type="password" id="inputPassword" class="form-control mb-3" placeholder="パスワード（確認）"  name="kakunin">
-      <input type="date" class="form-control mb-3" value="${thisUser.birth_date}" name="birth_date">
-      <input type="text" class="form-control mb-3" value="${thisUser.address}" name="address">
+        <h5 class="mb-3 text-center">商品情報更新</h5>
+      <form action="ItemUpdate" method="post">
+      <br><div class="ml-1">商品名　${thisItem.item_name}</div><br>
+             <input type="hidden" class="form-control mb-3" value="${thisItem.id}" name="item_id">
+      <select class="form-control mb-3" name="item_cate">
+      <option value="1">カテゴリーを選択</option>
+
+      <c:forEach var="c" items="${cateList}">
+      <option value="${c.id}"  <c:if test="${thisItem.cate_id == c.id }"> selected="selected" </c:if>> ${c.cate_name}</option>
+      </c:forEach>
+      </select>
+       <select class="form-control mb-3" name="item_maker">
+      <option value="">メーカーを選択</option>>
+      <c:forEach var="m" items="${makerList}">
+       <option value="${m.id}"  <c:if test="${thisItem.maker_id == m.id }"> selected="selected" </c:if>> ${m.maker_name}</option>
+      </c:forEach>
+      </select>
+
+      <input type="text" class="form-control mb-3 text-right" value="${thisItem.item_price}" name="item_price" placeholder="値段">
+      <input type="text" class="form-control mb-3 text-right" value="${thisItem.item_price_down}" name="item_price_down" placeholder="割引率">
 
     <input class="mt-4 btn btn-light form-control" type="submit"  value="変更">
     </form>

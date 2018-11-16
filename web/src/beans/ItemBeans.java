@@ -7,6 +7,8 @@ public class ItemBeans {
 
 	private int id;
 	private String item_name;
+	private int cate_id;
+	private int maker_id;
 	private String item_cate;
 	private String item_maker;
 	private int item_price;
@@ -15,8 +17,10 @@ public class ItemBeans {
 	private int item_price_down;
 
 
-	public ItemBeans(int id,String item_name , String item_cate2, String item_maker2, int item_price, String item_pic, Date item_date, int item_price_down) {
+	public ItemBeans(int id,String item_name ,  int cate_id , String item_cate2,  int maker_id ,String item_maker2, int item_price, String item_pic, Date item_date, int item_price_down) {
 		this.id=id;
+		this.cate_id = cate_id;
+		this.maker_id = maker_id;
 		this.item_name=item_name;
 		this.item_cate=item_cate2;
 		this.item_maker=item_maker2;
@@ -104,6 +108,26 @@ public class ItemBeans {
 
 	public void setItem_price_down(int item_price_down) {
 		this.item_price_down = item_price_down;
+	}
+
+
+	public int getCate_id() {
+		return cate_id;
+	}
+
+
+	public void setCate_id(int cate_id) {
+		this.cate_id = cate_id;
+	}
+
+
+	public int getMaker_id() {
+		return maker_id;
+	}
+
+
+	public void setMaker_id(int maker_id) {
+		this.maker_id = maker_id;
 	}
 
 }

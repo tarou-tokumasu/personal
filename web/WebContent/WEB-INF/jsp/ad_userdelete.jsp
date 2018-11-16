@@ -4,8 +4,8 @@
 <html lang="jp">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="style.css">
-    <title>商品詳細</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>ユーザー削除</title>
     <!-- BootstrapのCSS読み込み -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery読み込み -->
@@ -25,28 +25,20 @@
     </div>
 <div class="container">
 
-<div class="jumbotron">
-<h5 class="text-center mb-3">商品詳細</h5>
+<div class="jumbotron mx-auto text-center">
+<h5 class="mb-3">ユーザー削除</h5>
 	<br>
+	${thisUser.login_id}<br>
+	<form action="UserDelete" method="post">
+	<input type="hidden" value="${thisUser.login_id}" name="login_ID">
+	<p class="p-2">このユーザーを削除します</p>
+        <input type="submit" class="btn secondary" value="OK" onclick="return confirm('本当に削除してよろしいですか？');">
+</form>
 
-		<table class="mx-auto p-2">
-		<tr><td class="p-2">商品名</td><td>${thisItem.item_name }</td></tr>
-		<tr><td class="p-2">カテゴリ</td><td>${thisItem.item_cate}</td></tr>
-		<tr><td class="p-2">メーカー</td><td>${thisItem.item_maker}</td></tr>
-		<tr><td class="p-2">値段</td><td>${thisItem.item_price}</td></tr>
-		<tr><td class="p-2">割引</td><td>${thisItem.item_price_down}%</td></tr>
-		<tr><td class="p-2">取扱開始日</td><td>${thisItem.item_date}</td></tr>
-		<tr><td class="p-2">画像</td><td><img src="img/${thisItem.item_pic}"></td></tr>
-		</table>
-	<br>
-
-
-
-		</form>
 		</div>
 
 
-        <button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="ItemList">戻る</button>
+         <button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="UserList">戻る</button>
     </div>
 </body>
 </html>
