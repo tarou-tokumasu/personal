@@ -13,16 +13,21 @@
 </head>
 <body class="backg text-center mt-4">
 		<div class="container">
+		<c:if test="${loginErr != null}">
+		 <div class="alert alert-danger" role="alert">
+		 ${loginErr}
+		 </div>
+		</c:if>
 
 
 <div class="jumbotron signup">
         <h5 class="mb-3">ログイン</h5>
-      <form action="index" method="post">
+      <form action="Logincheck" method="post">
       <input type="text"  name="loginID" class="form-control mb-3" placeholder="ユーザーID" required="" autofocus="">
       <input type="password" name="password" id="inputPassword" class="form-control mb-3" placeholder="パスワード" required="">
       <input type="submit" class="mt-3 btn  btn-secondary form-control"  value="ログイン">
     </form>
-    <input class="mt-4 btn btn-light form-control" type="submit" onClick=location.href="createid.html" >
+    <input class="mt-4 btn btn-light form-control" type="submit" onClick=location.href="CreateID" value="新規ID作成">
       </div>
 		</div>
 	</body>

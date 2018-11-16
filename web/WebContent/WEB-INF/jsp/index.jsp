@@ -16,16 +16,28 @@
 	</head>
 <body class="backg">
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-light border-bottom shadow-sm">
-      <h5 class="my-0 mr-md-auto font-weight-normal">ECサイト</h5>
+     <h5 class="my-0 mr-md-auto font-weight-normal"> <a  class="text-dark" link href="index">ECサイト</a></h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2  href="#">ユーザー名さん</a>
-        <a class="p-2 text-dark" link href="ad_menu.html">管理者メニュー</a>
+      <c:if test="${userInfo !=null}">
+        <a class="p-2">${userInfo.user_name} さん</a>
+        </c:if>
+       <c:if test="${userInfo ==null}">
+        <a class="p-2">ゲスト さん</a>
+        </c:if>
+		<c:if test="${userInfo.login_id=='admin'}">
+        <a class="p-2 text-dark" link href="Ad_Menu">管理者メニュー</a>
+        </c:if>
        <a class="text-dark" link href="ranking.html">ランキング</a>
         <a class="p-2 text-dark" link href="userdetail.html">ユーザー情報</a>
          <a class="p-2 text-dark" link href="cart.html">カートの確認</a>
         <a class="p-2 text-dark"  link href="mylist.html">マイリスト</a>
       </nav>
-      <a  class="text-danger" link href="login.html">ログアウト</a>
+      <c:if test="${userInfo !=null}">
+      <a  class="text-danger" link href="LogOut">ログアウト</a>
+      </c:if>
+      <c:if test="${userInfo ==null}">
+      <a  class="text-danger" link href="Login">ログイン</a>
+      </c:if>
     </div>
 <div class="container">
 

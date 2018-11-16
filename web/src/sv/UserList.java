@@ -1,7 +1,7 @@
 package sv;
 
-
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,18 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.UserBeans;
+import dao.UserDAO;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class UserList
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/UserList")
+public class UserList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public UserList() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,27 +32,34 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		//セッションのログイン情報引っ張り出す
-		HttpSession session = request.getSession();
-		UserBeans u = (UserBeans)session.getAttribute("userInfo");
+		//管理者限定メニューチェッカー
+				HttpSession se = request.getSession();
+				UserBeans user =(UserBeans) se.getAttribute("userInfo");
 
-		//なんか入ってるのでメイン画面に追い返す
-		if(u!=null) {
-		response.sendRedirect("index");//短縮して書いたけどこれで動く？
-		}
-		else {
-		request.getRequestDispatcher(sc.LOGIN).forward(request, response);
-		}
-		}
+				//そもそもログインしてない
+				if(user==null) {
+					response.sendRedirect("Login");
+				}
+				//adminかどうかチェック
+				else if(user.getLogin_id().equals("admin")) {
+
+					//ユーザーリスト一覧を取得
+					UserDAO ud = new UserDAO();
+
+					List<UserBeans> userList = ud.getALLUser();
+					request.setAttribute("userList", userList);
+				request.getRequestDispatcher(sc.USER_LIST).forward(request, response);}
+				else {
+					response.sendRedirect("index");
+				}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//ログイン画面のpostはlogincheckサーブレットの方に移動
-
-		}
-
-
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
 
 }

@@ -1,5 +1,6 @@
 package beans;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class UserBeans {
@@ -91,4 +92,19 @@ public class UserBeans {
 		this.point = point;
 	}
 
+
+
+	//日時返還
+	public String getformatBirthDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+		return sdf.format(birth_date);
+	}
+	public String getformatCreateDate() {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日HH時mm分");
+			return sdf.format(create_date);
+	}
+	public String getformatUpdateDate() {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日HH時mm分");
+			return sdf.format(update_date);
+	}
 }

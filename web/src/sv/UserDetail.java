@@ -1,6 +1,5 @@
 package sv;
 
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -11,18 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.UserBeans;
+import dao.UserDAO;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class UserDetail
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/UserDetail")
+public class UserDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public UserDetail() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,27 +31,35 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		//セッションのログイン情報引っ張り出す
-		HttpSession session = request.getSession();
-		UserBeans u = (UserBeans)session.getAttribute("userInfo");
+		//管理者限定メニューチェッカー
+		HttpSession se = request.getSession();
+		UserBeans user =(UserBeans) se.getAttribute("userInfo");
 
-		//なんか入ってるのでメイン画面に追い返す
-		if(u!=null) {
-		response.sendRedirect("index");//短縮して書いたけどこれで動く？
+		//そもそもログインしてない
+		if(user==null) {
+			response.sendRedirect("Login");
 		}
+		//adminかどうかチェック
+		else if(user.getLogin_id().equals("admin")) {
+
+			String id =request.getParameter("id");
+			//参照先のデータを参照
+			UserDAO ud = new UserDAO();
+
+			UserBeans u = ud.searchID(id);
+			request.setAttribute("thisUser", u);
+		request.getRequestDispatcher(sc.AD_USER_DETAIL).forward(request, response);}
 		else {
-		request.getRequestDispatcher(sc.LOGIN).forward(request, response);
+			response.sendRedirect("index");
 		}
-		}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//ログイン画面のpostはlogincheckサーブレットの方に移動
-
-		}
-
-
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
 
 }

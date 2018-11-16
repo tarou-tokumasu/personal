@@ -1,6 +1,5 @@
 package sv;
 
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -11,18 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.UserBeans;
+import dao.UserDAO;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class Logincheck
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/Logincheck")
+public class Logincheck extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Logincheck() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,27 +31,38 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		//セッションのログイン情報引っ張り出す
-		HttpSession session = request.getSession();
-		UserBeans u = (UserBeans)session.getAttribute("userInfo");
-
-		//なんか入ってるのでメイン画面に追い返す
-		if(u!=null) {
-		response.sendRedirect("index");//短縮して書いたけどこれで動く？
-		}
-		else {
-		request.getRequestDispatcher(sc.LOGIN).forward(request, response);
-		}
-		}
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//ログイン画面のpostはlogincheckサーブレットの方に移動
+		String loginID =request.getParameter("loginID");
+		String password = request.getParameter("password");
+
+		//DBで照会
+		UserDAO ud = new UserDAO();
+		UserBeans u = ud.findLoginID(loginID, password);
+
+		//セッション用意
+		HttpSession se = request.getSession();
+
+		//入ってないぞ
+		if(u==null) {
+			se.setAttribute("loginErr", "ユーザーIDかパスワードが間違っています");
+			response.sendRedirect("Login");
 
 		}
+		//見つかったぞ
+		else {
 
-
+		//セッションに保存
+		se.setAttribute("userInfo", u);
+		se.removeAttribute("loginErr");
+		response.sendRedirect("index");
+	}
+	}
 
 }
