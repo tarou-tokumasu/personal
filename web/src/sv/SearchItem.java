@@ -11,23 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import beans.CateBeans;
 import beans.ItemBeans;
-import beans.MakerBeans;
-import beans.UserBeans;
 import dao.ItemDAO;
 
 /**
- * Servlet implementation class ItemList
+ * Servlet implementation class SearchItem
  */
-@WebServlet("/ItemList")
-public class ItemList extends HttpServlet {
+@WebServlet("/SearchItem")
+public class SearchItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ItemList() {
+    public SearchItem() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,45 +32,61 @@ public class ItemList extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//管理者限定メニューチェッカー
+
+		//ソートするとここに飛ぶ
+		ItemDAO id = new ItemDAO();
 		HttpSession se = request.getSession();
-		UserBeans user =(UserBeans) se.getAttribute("userInfo");
 
-		//そもそもログインしてない
-		if(user==null) {
-			response.sendRedirect("Login");
+
+		List<ItemBeans> il = new ArrayList<ItemBeans>();
+
+		il = (List<ItemBeans>) se.getAttribute("searchList");
+
+		if(il==null) {
+			il= id.getAllItem();
 		}
-		//adminかどうかチェック
-		else if(user.getLogin_id().equals("admin")) {
 
-			//ユーザーリスト一覧を取得
-			ItemDAO id = new ItemDAO();
 
-			List<ItemBeans> itemList = id.getAllItem();
-			request.setAttribute("itemList", itemList);
+		//ソート番号は
+		int sort = Integer.parseInt(request.getParameter("sort"));
 
-			//アイテムカテゴリーやメーカーの一覧が必要
-			//ビーンズは別途用意DAOはアイテムのとこで
-			List<CateBeans> cateList = new ArrayList<CateBeans>();
-			cateList = id.getAllCate();
 
-			List<MakerBeans> makerList = new ArrayList<MakerBeans>();
-			makerList = id.getAllMaker();
+		switch(sort) {
 
-			request.setAttribute("cateList", cateList);
-			request.setAttribute("makerList", makerList);
-
-			request.getRequestDispatcher(sc.ITEM_LIST).forward(request, response);}
-			else {
-				response.sendRedirect("index");
+		case 1://新着
+			il.sort((b,a)-> (int)(a.getItem_date().getTime() - b.getItem_date().getTime()) );
+			break;
+		case 2://値段低い
+			il.sort((a,b)-> a.getitem_pricez() - b.getitem_pricez()) ;
+			break;
+		case 3://値段高い
+			il.sort((b,a)-> a.getitem_pricez() - b.getitem_pricez() );
+			break;
+		case 4://割り引かれてる順
+			il.sort((b,a)-> a.getItem_price_down() - b.getItem_price_down() );
+		case 5://評価
+			//TODO:未実装
 		}
+
+
+		se.setAttribute("searchList", il);
+		se.setAttribute("sort", sort);
+
+		response.sendRedirect("SearchResult");
+
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		ItemDAO ud = new ItemDAO();
+
+		HttpSession se= request.getSession();
+
 		request.setCharacterEncoding("UTF-8");
 		//3（4）つの条件で検索　空欄だったらスルー　入ってたら whereの後に詰め込む条件文付け足していく
 		//ただしsince until片方の入力だったらbetween使わないやつになる
@@ -130,27 +143,40 @@ public class ItemList extends HttpServlet {
 			if(cm==true)//検索条件どれか入ってる？
 			{
 
-			ItemDAO ud = new ItemDAO();
 			List<ItemBeans> searchList = ud.getALLItem(sql);
 
 			// リクエストスコープにユーザ一覧情報をセット
-			request.setAttribute("itemList", searchList);
+			se.setAttribute("item_name", item_name);
+			se.setAttribute("item_cate", item_cate);
+			se.setAttribute("item_maker", item_maker);
+			se.setAttribute("since", since);
+			se.setAttribute("until", until);
+			se.setAttribute("searchList", searchList);
+			se.setAttribute("sql", sql);
+
+			// 検索結果フォワード
+			response.sendRedirect("SearchResult");
 
 			}
 			else {//何も入ってない
-				request.setAttribute("Err", "検索条件を指定してください");
+				//全件検索
+				List<ItemBeans> searchList = ud.getAllItem();
+				searchList.sort((b,a)-> (int)(a.getItem_date().getTime() - b.getItem_date().getTime()) );
+				se.setAttribute("searchList", searchList);
+				se.setAttribute("sort", 1);
 
-				// ユーザ一覧情報を取得
-				ItemDAO ud = new ItemDAO();
-				List<ItemBeans> itemList = ud.getAllItem();
+				se.removeAttribute("item_name");
+				se.removeAttribute("item_cate");
+				se.removeAttribute("item_maker");
+				se.removeAttribute("since");
+				se.removeAttribute("until");
 
-				// リクエストスコープにユーザ一覧情報をセット
-				request.setAttribute("itemList", itemList);
+				response.sendRedirect("SearchResult?sort=1");
 
 			}
 
-			// ユーザ一覧のjspにフォワード
-			request.getRequestDispatcher(sc.ITEM_LIST).forward(request, response);
+
 	}
+
 
 }

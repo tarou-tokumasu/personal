@@ -61,8 +61,8 @@ public class AddItem extends HttpServlet {
 		List<MakerBeans> makerList = new ArrayList<MakerBeans>();
 		makerList = id.getAllMaker();
 
-		request.setAttribute("cateList", cateList);
-		request.setAttribute("makerList", makerList);
+		se.setAttribute("cateList", cateList);
+		se.setAttribute("makerList", makerList);
 
 		request.getRequestDispatcher(sc.AD_ADD_ITEM).forward(request, response);}
 		else {
@@ -85,9 +85,11 @@ public class AddItem extends HttpServlet {
 
 
 		ItemDAO id = new ItemDAO();
-		String files= request.getParameter("file");
+		Part part =request.getPart("file");
 		//空欄潰す ""指定だとエラー吐く
-		if(item_name.length()==0 || item_cate.length()==0 || item_maker.length()==0 || item_price.length()==0 || item_price_down.length()==0 || files==null) {
+
+
+		if(item_name.length()==0 || item_cate.length()==0 || item_maker.length()==0 || item_price.length()==0 || item_price_down.length()==0 || part==null ) {
 		request.setAttribute("Err", "空欄があります");
 		request.getRequestDispatcher(sc.AD_ADD_ITEM).forward(request, response);
 		}
@@ -99,7 +101,6 @@ public class AddItem extends HttpServlet {
 		}
 		else {
 		//ファイルアップロードのあれこれ　この時点ではorg.apache.catalina.core.ApplicationPart@20d467b6とか謎文字列
-		Part part =request.getPart("file");
 		//ファイル名だけ抽出してくれた dq11.jpg
 		String name =this.getFileName(part);
 
@@ -111,6 +112,8 @@ public class AddItem extends HttpServlet {
 		//同名ファイルあってもお構いなし
 		String path = getServletContext().getRealPath("/img");
 		part.write(getServletContext().getRealPath("/img") + "/" + name);
+
+		System.out.println(path + part);
 
 		response.sendRedirect("ItemList");
 

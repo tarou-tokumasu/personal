@@ -26,14 +26,32 @@
     </div>
 <div class="container">
 
+<c:if test="${Err !=null}">
+<div class="alert alert-danger" role="alert">
+${Err}
+</div>
+</c:if>
+
 <div class="jumbotron">
 <h5 class="text-center mb-3">商品検索</h5>
 
-		<form class="text-center" action="UserListServlet" method="post">
+		<form class="text-center" action="ItemList" method="post">
 
-		<input type="text" class="form" name="loginId" placeholder="商品名"><br><br>
-		<input type="text" class="form" name="userName"  placeholder="カテゴリ名"><br><br>
-		<input type="text" class="form" name="userName"  placeholder="メーカー名"><br><br>
+		<input type="text" class="form" name="item_name" placeholder="商品名"><br><br>
+      <select class="mb-3 form" name="item_cate">
+      <option value="">カテゴリーを選択</option>
+      <c:forEach var="c" items="${cateList}">
+      <option value="${c.id}">${c.cate_name}</option>
+      </c:forEach>
+      </select>
+      <br><br>
+      <select class="mb-3 form" name="item_maker">
+      <option value="">メーカーを選択</option>>
+      <c:forEach var="m" items="${makerList}">
+      <option value="${m.id}">${m.maker_name}</option>
+      </c:forEach>
+      </select>
+      <br><br>
 		<input type="date"  class="form" name="since"  size="5"> ～
 		<input type="date"  class="form" name="until" maxlength="10" size="5"><br><br>
 		<input  class="mb-2 btn  btn-secondary" type="submit" value="検索">
@@ -65,8 +83,8 @@
        <td>${i.item_name}</td>
       <td>${i.item_cate}</td>
       <td>${i.item_maker}</td>
-      <td class="text-right">${i.item_price}</td>
-      <td class="text-right">${i.item_price_down}</td>
+      <td class="text-right">${i.item_pricec}</td>
+      <td class="text-right">${i.item_price_down}％</td>
       <td>${i.item_date}</td>
       <td class="text-center">
        <button class="btn  btn-secondary" type="submit" onClick=location.href="ItemDetail?id=${i.id}">詳細</button>

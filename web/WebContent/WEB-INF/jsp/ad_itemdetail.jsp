@@ -33,7 +33,7 @@
 		<tr><td class="p-2">商品名</td><td>${thisItem.item_name }</td></tr>
 		<tr><td class="p-2">カテゴリ</td><td>${thisItem.item_cate}</td></tr>
 		<tr><td class="p-2">メーカー</td><td>${thisItem.item_maker}</td></tr>
-		<tr><td class="p-2">値段</td><td>${thisItem.item_price}</td></tr>
+		<tr><td class="p-2">値段</td><td>${thisItem.item_pricec}</td></tr>
 		<tr><td class="p-2">割引</td><td>${thisItem.item_price_down}%</td></tr>
 		<tr><td class="p-2">取扱開始日</td><td>${thisItem.item_date}</td></tr>
 		<tr><td class="p-2">画像</td><td><img src="img/${thisItem.item_pic}"></td></tr>

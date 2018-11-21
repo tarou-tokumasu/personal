@@ -1,6 +1,5 @@
 package sv;
 
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -10,19 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import beans.UserBeans;
-
 /**
- * Servlet implementation class Login
+ * Servlet implementation class Regi
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/Regi")
+public class Regi extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Regi() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,28 +28,35 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		//セッションのログイン情報引っ張り出す
-		HttpSession session = request.getSession();
-		UserBeans u = (UserBeans)session.getAttribute("userInfo");
 
-		//なんか入ってるのでメイン画面に追い返す
-		if(u!=null) {
-		response.sendRedirect("index");
+		HttpSession se = request.getSession();
+
+		//ログインしてなかったらログイン促す
+		if(se.getAttribute("userInfo")==null) {
+			//ログインした後にどこに飛ばすか
+			se.setAttribute("returnURL", "Regi");
+			//ログイン画面送り
+			response.sendRedirect("Login");
 		}
 		else {
+		//レジ画面に
+		DeliBeans deli = (DeliBeans) se.getAttribute("deli");
+		int delip = deli.getDeli_price();
+		int total2 = (int) se.getAttribute("total") + delip;
 
-		request.getRequestDispatcher(sc.LOGIN).forward(request, response);
+System.out.println(total2);
+		se.setAttribute("total2", total2);
+
+		request.getRequestDispatcher(sc.REGI).forward(request, response);
 		}
-		}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//ログイン画面のpostはlogincheckサーブレットの方に移動
-
-		}
-
-
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
 
 }

@@ -49,6 +49,8 @@ public class Logincheck extends HttpServlet {
 		//セッション用意
 		HttpSession se = request.getSession();
 
+
+
 		//入ってないぞ
 		if(u==null) {
 			se.setAttribute("loginErr", "ユーザーIDかパスワードが間違っています");
@@ -57,11 +59,21 @@ public class Logincheck extends HttpServlet {
 		}
 		//見つかったぞ
 		else {
+			se.setAttribute("userInfo", u);
+			se.removeAttribute("loginErr");
+
+		//戻り先取れてる？
+		String url = (String) se.getAttribute("returnURL");
+		if(url!=null) {
+			response.sendRedirect(url);
+			se.removeAttribute("returnURL");
+		}
+		else {
+			response.sendRedirect("index");
+		}
 
 		//セッションに保存
-		se.setAttribute("userInfo", u);
-		se.removeAttribute("loginErr");
-		response.sendRedirect("index");
+
 	}
 	}
 

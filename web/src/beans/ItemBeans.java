@@ -1,5 +1,6 @@
 package beans;
 
+import java.text.NumberFormat;
 import java.util.Date;
 
 public class ItemBeans {
@@ -130,4 +131,21 @@ public class ItemBeans {
 		this.maker_id = maker_id;
 	}
 
+	//カンマ付けて返す
+	public String getitem_pricec () {
+		NumberFormat nf = NumberFormat.getCurrencyInstance();
+		return  nf.format(item_price);
+	}
+
+	public String getitem_pricew () {
+		int item_pricew = item_price * ( 100 - item_price_down ) / 100 ;
+		NumberFormat nf = NumberFormat.getCurrencyInstance();
+		return  nf.format(item_pricew);
+	}
+
+	//付けずに純粋に割引後の値段を返す
+	public int getitem_pricez() {
+		return item_price * ( 100 - item_price_down ) / 100 ;
+
+	}
 }

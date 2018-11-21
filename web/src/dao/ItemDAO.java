@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -50,10 +51,8 @@ public class ItemDAO {
                 ItemBeans item = new ItemBeans(id, item_name ,cate_id, item_cate ,maker_id, item_maker , item_price , item_pic , item_date , item_price_down);
 
                 itemList.add(item);
-                System.out.println("アイテムデータ取得中");
 
 			}
-			System.out.println("出力");
 			return itemList;
 
 		} catch (SQLException e) {
@@ -329,8 +328,216 @@ return null;
 
 	}
 
+	public List<ItemBeans> getALLItem(String sql2) {
+		ArrayList<ItemBeans> itemList = new ArrayList<ItemBeans>();
+
+		Connection cone = null;
+		cone = DBManager.getConnection();
+
+		try {
+			Statement st = cone.createStatement();
+			ResultSet rs =st.executeQuery(sql2);
+
+			while(rs.next()) {
+
+				int id = rs.getInt("id");
+                String item_name = rs.getString("item_name");
+                String item_cate = rs.getString("cate_name");
+                String item_maker = rs.getString("maker_name");
+                int item_price = rs.getInt("item_price");
+                String item_pic = rs.getString("item_pic");
+                Date item_date = rs.getDate("item_date");
+                int item_price_down = rs.getInt("item_price_down");
+                int cate_id =rs.getInt("item_cate");
+                int maker_id=rs.getInt("item_maker");
 
 
+                ItemBeans item = new ItemBeans(id, item_name ,cate_id, item_cate ,maker_id, item_maker , item_price , item_pic , item_date , item_price_down);
+
+                itemList.add(item);
+
+			}
+			return itemList;
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}finally {try {
+			cone.close();
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}}
+
+
+
+
+
+		return itemList;
+	}
+
+	public List<ItemBeans> getNewItem(int i){
+
+		ArrayList<ItemBeans> newList = new ArrayList<ItemBeans>();
+
+		Connection cone = null;
+		cone = DBManager.getConnection();
+
+		String sql= "SELECT * FROM item "
+				+ " inner join maker ON item.item_maker = maker.id "
+				+ " inner join cate ON  item.item_cate = cate.id ORDER BY item_date desc;";
+
+		try {
+			Statement st = cone.createStatement();
+			ResultSet rs =st.executeQuery(sql);
+
+			if(!rs.next()) { //アイテムがない場合
+				return null;
+			}
+
+
+			for(int j = 0 ; j<i ; j++) { //引数回分引っ張り出す
+				int id = rs.getInt("id");
+                String item_name = rs.getString("item_name");
+                String item_cate = rs.getString("cate_name");
+                String item_maker = rs.getString("maker_name");
+                int item_price = rs.getInt("item_price");
+                String item_pic = rs.getString("item_pic");
+                Date item_date = rs.getDate("item_date");
+                int item_price_down = rs.getInt("item_price_down");
+                int cate_id =rs.getInt("item_cate");
+                int maker_id=rs.getInt("item_maker");
+
+
+                ItemBeans item = new ItemBeans(id, item_name ,cate_id, item_cate ,maker_id, item_maker , item_price , item_pic , item_date , item_price_down);
+                newList.add(item);
+                rs.next();
+			}
+
+
+			return newList;
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}finally {try {
+			cone.close();
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+
+
+	}}
+
+		return newList;
+
+	}
+
+	public List<ItemBeans> getSaleItem(int i) {
+		ArrayList<ItemBeans> newList = new ArrayList<ItemBeans>();
+
+		Connection cone = null;
+		cone = DBManager.getConnection();
+
+		String sql= "SELECT * FROM item "
+				+ " inner join maker ON item.item_maker = maker.id "
+				+ " inner join cate ON  item.item_cate = cate.id WHERE item_price_down > 0;";
+
+		try {
+			Statement st = cone.createStatement();
+			ResultSet rs =st.executeQuery(sql);
+
+			if(!rs.next()) { //アイテムがない場合
+				return null;
+			}
+
+
+			for(int j = 0 ; j<i ; j++) { //引数回分引っ張り出す
+				int id = rs.getInt("id");
+                String item_name = rs.getString("item_name");
+                String item_cate = rs.getString("cate_name");
+                String item_maker = rs.getString("maker_name");
+                int item_price = rs.getInt("item_price");
+                String item_pic = rs.getString("item_pic");
+                Date item_date = rs.getDate("item_date");
+                int item_price_down = rs.getInt("item_price_down");
+                int cate_id =rs.getInt("item_cate");
+                int maker_id=rs.getInt("item_maker");
+
+
+                ItemBeans item = new ItemBeans(id, item_name ,cate_id, item_cate ,maker_id, item_maker , item_price , item_pic , item_date , item_price_down);
+                newList.add(item);
+                rs.next();
+			}
+
+			Collections.shuffle(newList);
+			return newList;
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}finally {try {
+			cone.close();
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+
+
+	}}
+
+		return newList;
+	}
+
+	public List<ItemBeans> searchByName(String sql, String sw) {
+		Connection cone = null;
+		cone = DBManager.getConnection();
+
+		sql+=" item_name LIKE ?";
+		ArrayList<ItemBeans> itemList = new ArrayList<ItemBeans>();
+
+
+		try {
+			PreparedStatement pst = cone.prepareStatement(sql);
+			pst.setString(1, "%" + sw + "%");
+			ResultSet rs = pst.executeQuery();
+
+			while(rs.next()) {
+				int id = rs.getInt("id");
+                String item_name = rs.getString("item_name");
+                String item_cate = rs.getString("cate_name");
+                String item_maker = rs.getString("maker_name");
+                int item_price = rs.getInt("item_price");
+                String item_pic = rs.getString("item_pic");
+                Date item_date = rs.getDate("item_date");
+                int item_price_down = rs.getInt("item_price_down");
+                int cate_id =rs.getInt("item_cate");
+                int maker_id=rs.getInt("item_maker");
+
+
+                ItemBeans item = new ItemBeans(id, item_name ,cate_id, item_cate ,maker_id, item_maker , item_price , item_pic , item_date , item_price_down);
+
+                itemList.add(item);
+
+			}
+			return itemList;
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}finally {try {
+			cone.close();
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}}
+
+
+
+
+
+		return itemList;
+
+	}
 
 
 }

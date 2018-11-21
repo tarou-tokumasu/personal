@@ -342,4 +342,50 @@ public class UserDAO {
 	}
 
 
+
+	public List<UserBeans> getALLUser(String sql1) {
+		Connection cone = null;
+
+		cone = DBManager.getConnection();
+		ArrayList<UserBeans> userList = new ArrayList<UserBeans>();
+
+		try {
+			Statement st = cone.createStatement();
+			ResultSet rs = st.executeQuery(sql1);
+
+			while(rs.next()) {
+                int id = rs.getInt("id");
+                String loginId = rs.getString("login_id");
+                String name = rs.getString("user_name");
+                String address = rs.getString("address");
+                Date birthDate = rs.getDate("birth_date");
+                String password = rs.getString("password");
+                Date createDate = rs.getDate("create_date");
+                Date updateDate = rs.getDate("update_date");
+                int point = rs.getInt("point");
+
+
+                UserBeans user = new UserBeans(id, loginId, name,address, birthDate, password, createDate, updateDate,point);
+
+                userList.add(user);
+
+			}
+
+
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}finally {
+
+			try {
+				cone.close();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+
+		return userList;
+	}
 	}

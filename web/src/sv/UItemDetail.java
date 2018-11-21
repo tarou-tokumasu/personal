@@ -1,6 +1,5 @@
 package sv;
 
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -8,21 +7,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import beans.UserBeans;
+import beans.ItemBeans;
+import dao.ItemDAO;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class UItemDetail
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/UItemDetail")
+public class UItemDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public UItemDetail() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,28 +30,24 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		//セッションのログイン情報引っ張り出す
-		HttpSession session = request.getSession();
-		UserBeans u = (UserBeans)session.getAttribute("userInfo");
 
-		//なんか入ってるのでメイン画面に追い返す
-		if(u!=null) {
-		response.sendRedirect("index");
-		}
-		else {
+		String idd =request.getParameter("id");
+		//参照先のデータを参照
 
-		request.getRequestDispatcher(sc.LOGIN).forward(request, response);
-		}
-		}
+		ItemDAO id = new ItemDAO();
+		
+		ItemBeans i = id.searchID(idd);
+		request.setAttribute("thisItem", i);
+
+		request.getRequestDispatcher(sc.ITEM_DETAIL).forward(request, response);
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//ログイン画面のpostはlogincheckサーブレットの方に移動
-
-		}
-
-
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
 
 }

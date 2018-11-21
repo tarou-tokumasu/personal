@@ -29,7 +29,7 @@
         </c:if>
        <a class="text-dark" link href="ranking.html">ランキング</a>
         <a class="p-2 text-dark" link href="userdetail.html">ユーザー情報</a>
-         <a class="p-2 text-dark" link href="cart.html">カートの確認</a>
+         <a class="p-2 text-dark" link href="Cart">カートの確認</a>
         <a class="p-2 text-dark"  link href="mylist.html">マイリスト</a>
       </nav>
       <c:if test="${userInfo !=null}">
@@ -81,106 +81,90 @@
 
 <div class="row">
   <div class="col-sm-3">
-  <form>
-  <input type="text" class="form" name="search" placeholder="商品名で検索">　<a href="search.html"><img src="img/search.png"></a>
+  <form action="SearchItem" method="post">
+  <input type="text" class="form-control mb-3" name="item_name" placeholder="商品名">
+      <select class="mb-3 form-control" name="item_cate">
+      <option value="">カテゴリーを選択</option>
+      <c:forEach var="c" items="${cateList}">
+      <option value="${c.id}">${c.cate_name}</option>
+      </c:forEach>
+      </select>
+      <select class="mb-3 form-control" name="item_maker">
+      <option value="">メーカーを選択</option>>
+      <c:forEach var="m" items="${makerList}">
+      <option value="${m.id}">${m.maker_name}</option>
+      </c:forEach>
+      </select>
+      		<input type="date"  class="form-control" name="since"  size="5"> ～
+		<input type="date"  class="form-control mb-3" name="until" maxlength="10" size="5">
+	<input type="submit" class="form-control" value="検索">
   </form>
-  <br><h5>ジャンルで探す</h5>
-  <a class="text-dark" href="search.html">・ジャンルA</a><br>
-  ・ジャンルB<br>
-  ・ジャンルC<br>
-   <br><h5>メーカーで探す</h5>
-  <a class="text-dark" href="search.html">・ジャンルA</a><br>
-  ・ジャンルB<br>
-  ・ジャンルC<br>
+
 
   </div>
+
+
   <div class="col-sm-9 ">
- <a class="text-dark" link href="search.html"> <h5>割引中</h5></a>
+
+ <a class="text-dark" link href="SearchItem?sort=4"><h5>割引中</h5></a>
  <div class="row">
+
+ <c:forEach var="n" items="${saleList}">
  <div class="col-sm-3">
-  <div class="card" style="width: 10rem;">
-  <img class="card-img-top" src="img/terraria.jpg" alt="Card image cap">
+  <a  class="text-dark" link href="UItemDetail?id=${n.id}">
+   <div class="card" style="width: 14rem;">
+ <img class="card-img-top" src="img/${n.item_pic}" alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">Terraria</h5>
-    <p class="card-text">評価値</p>
-     <p class="card-text">サンドボックス</p>
-    <p class="card-text">500円(50% off)</p>
+    <h6 class="small">${n.item_name}</h6>
+     <p class="card-text small">${n.item_cate}</p>
+    <p class="card-text small">
+    <c:choose>
+    <c:when test="${n.item_price_down ==0 }">${n.item_pricec} </c:when>
+     <c:when test="${n.item_price_down !=0 }"><s>${n.item_pricec}</s>${n.item_pricew} </c:when>
+    </c:choose>
+
+   <c:if test="${n.item_price_down !=0 }"> <font color="red">${n.item_price_down}%off</font> </c:if>
+
+    <p class="card-text small">${n.item_date}</p>
+    </a>
+
   </div>
   </div>
   </div>
-   <div class="col-sm-3">
-  <div class="card" style="width: 10rem;">
-  <img class="card-img-top" src="img/terraria.jpg" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Terraria</h5>
-     <p class="card-text">サンドボックス</p>
-    <p class="card-text">500円(50% off)</p>
+  </c:forEach>
   </div>
-  </div>
-  </div>
-   <div class="col-sm-3">
-  <div class="card" style="width: 10rem;">
-  <img class="card-img-top" src="img/terraria.jpg" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Terraria</h5>
-     <p class="card-text">サンドボックス</p>
-    <p class="card-text">500円(50% off)</p>
-  </div>
-  </div>
-  </div>
-   <div class="col-sm-3">
-  <div class="card" style="width: 10rem;">
-  <a href="itemdetail.html"><img class="card-img-top" src="img/terraria.jpg" alt="Card image cap"></a>
-  <div class="card-body">
-    <h5 class="card-title">Terraria</h5>
-     <p class="card-text">サンドボックス</p>
-    <p class="card-text">500円(50% off)</p>
-  </div>
-  </div>
-  </div>
-  </div><br>
-    <a class="text-dark" link href="search.html"><h5>新作</h5></a>
+
+
+
+   <a class="text-dark mt-5" link href="SearchItem?sort=1"><h5>新作</h5></a>
  <div class="row mb-4">
+
+ <c:forEach var="n" items="${newList}">
  <div class="col-sm-3">
-  <div class="card" style="width: 10rem;">
-  <img class="card-img-top" src="img/terraria.jpg" alt="Card image cap">
+
+  <a  class="text-dark" link href="UItemDetail?id=${n.id}">
+  <div class="card" style="width: 14rem;">
+  <img class="card-img-top" src="img/${n.item_pic}" alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">Terraria</h5>
-     <p class="card-text">サンドボックス</p>
-    <p class="card-text">500円(50% off)</p>
+    <h6 class="small">${n.item_name}</h6>
+     <p class="card-text small">${n.item_cate}</p>
+    <p class="card-text small">
+    <c:choose>
+    <c:when test="${n.item_price_down ==0 }">${n.item_pricec} </c:when>
+     <c:when test="${n.item_price_down !=0 }"><s>${n.item_pricec}</s>${n.item_pricew} </c:when>
+    </c:choose>
+
+   <c:if test="${n.item_price_down !=0 }"> <font color="red">${n.item_price_down}%off</font> </c:if>
+
+    <p class="card-text small">${n.item_date}</p>
+    </a>
+
   </div>
   </div>
   </div>
-   <div class="col-sm-3">
-  <div class="card" style="width: 10rem;">
-  <img class="card-img-top" src="img/terraria.jpg" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Terraria</h5>
-     <p class="card-text">サンドボックス</p>
-    <p class="card-text">500円(50% off)</p>
-  </div>
-  </div>
-  </div>
-   <div class="col-sm-3">
-  <div class="card" style="width: 10rem;">
-  <img class="card-img-top" src="img/terraria.jpg" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Terraria</h5>
-     <p class="card-text">サンドボックス</p>
-    <p class="card-text">500円(50% off)</p>
-  </div>
-  </div>
-  </div>
-   <div class="col-sm-3">
-  <div class="card" style="width: 10rem;">
-  <a href="item.html"><img class="card-img-top" src="img/terraria.jpg" alt="Card image cap"></a>
-  <div class="card-body">
-    <h5 class="card-title">Terraria</h5>
-     <p class="card-text">サンドボックス</p>
-    <p class="card-text">500円(50% off)</p>
-  </div>
-  </div>
-  </div>
+ </c:forEach>
+
+
 </div>
   </div>
 </div>

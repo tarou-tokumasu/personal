@@ -28,10 +28,11 @@
 <div class="jumbotron">
 <h5 class="text-center mb-3">ユーザー検索</h5>
 
-		<form class="text-center" action="UserListServlet" method="post">
+		<form class="text-center" action="UserList" method="post" >
 
-		<input type="text" name="loginId" placeholder="ログインID"><br><br>
-		<input type="text" name="userName"  placeholder="ユーザー名"><br><br>
+		<input type="text" name="loginId" placeholder="ログインID（完全一致）"><br><br>
+		<input type="text" name="userName"  placeholder="ユーザー名（部分一致）"><br><br>
+		<input type="text" name="address"  placeholder="住所（部分一致）"><br><br>
 		<input type="date" name="since"  size="5"> ～
 		<input type="date" name="until" maxlength="10" size="5"><br><br>
 		<input  class="mb-2 btn secondary" type="submit" value="検索">
