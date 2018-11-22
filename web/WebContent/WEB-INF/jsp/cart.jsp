@@ -93,6 +93,7 @@ ${notice}
    <td class="center"></td>
 
 </tr>
+<c:if test="${userInfo!= null}">
 <tr> <td></td><td></td><td class="text-right">
     <select name="deli">
    <c:forEach var="d" items="${deliList}">
@@ -101,7 +102,11 @@ ${notice}
    </option>
    </c:forEach>
    </select>
-
+</td></tr>
+<tr> <td></td><td></td><td class="text-right">
+   現在所持ポイント: ${userInfo.point} <input type="text" name="point" placeholder="1P=1円の値引き">
+</td></tr>
+</c:if>
    </tbody>
 
     </table>
@@ -109,7 +114,7 @@ ${notice}
 
     </div>
     <button class="mt-3 btn  btn-secondary form-control" type="submit" name="action" value="doDel">チェックされた商品を削除</button>
-	<button class="mt-3 btn  btn-secondary form-control" type="submit" name="action" value="doRegi">レジへ進む</button>
+	<button class="mt-3 btn  btn-secondary form-control" type="submit" name="action" value="doRegi">レジへ進む（要ログイン）</button>
 
 	</form>
 	<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick="history.go(-2)">戻る</button>

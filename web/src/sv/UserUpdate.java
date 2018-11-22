@@ -35,6 +35,9 @@ public class UserUpdate extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String idd = request.getParameter("id");
+		String url = request.getParameter("return");
+
+
 		//管理者限定メニューチェッカー
 		HttpSession se = request.getSession();
 		UserBeans user =(UserBeans) se.getAttribute("userInfo");
@@ -43,24 +46,24 @@ public class UserUpdate extends HttpServlet {
 		if(user==null) {
 			response.sendRedirect("Login");
 		}
-		//adminかどうかチェック
-		else if(user.getLogin_id().equals("admin")) {
 
 			//ユーザー情報取得
 			UserDAO ud = new UserDAO();
 
 			UserBeans u = ud.searchID(idd);
 			request.setAttribute("thisUser", u);
+			if(url.equals("UUserDetail")) {
+			request.setAttribute("url", url);
+			}
 		request.getRequestDispatcher(sc.AD_USER_UPDATE).forward(request, response);}
-		else {
-			response.sendRedirect("index");
-		}
-	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession se = request.getSession();
+
+		String id = request.getParameter("ID");
 		String login_ID = request.getParameter("login_ID");
 		String user_name =request.getParameter("user_name");
 		String password = request.getParameter("password");
@@ -79,15 +82,25 @@ public class UserUpdate extends HttpServlet {
 			request.setAttribute("Err", "入力されたパスワードが異なっています");
 			request.getRequestDispatcher(sc.AD_USER_UPDATE).forward(request, response);
 		}
-		else if(password!=null && kakunin!=null) { //中身が入ってるなら
+		else if(password!="" && kakunin!="") { //中身が入ってるなら
 		//パス更新
 			ud.UpdatePassword(login_ID,password);
 		}
 
 		//ユーザー情報更新
 		ud.UpdateUser(login_ID , user_name,birth_date,address,sdf1.format(update_date));
-		response.sendRedirect("UserList");
+		//セッションも更新
+		UserBeans uinfo = UserDAO.searchID(id);
+		se.setAttribute("userInfo",uinfo );
 
+
+		String url = request.getParameter("url");
+		if(url.equals("UUserDetail")) {
+		response.sendRedirect(url);
+		}
+		else {
+		response.sendRedirect("UserList");
+		}
 	}
 
 }

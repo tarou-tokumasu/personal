@@ -99,7 +99,7 @@ ${notice}
 		</div>
 		</div>
 		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="AddCart?id=${thisItem.id}">カートに入れる</button>
-		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="history.back()">戻る</button>
+		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick="history.back()">戻る</button>
 
 </div>
 </body>

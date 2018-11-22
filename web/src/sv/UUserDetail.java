@@ -1,6 +1,7 @@
 package sv;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,50 +10,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.BuyDataBeans;
 import beans.UserBeans;
-import dao.UserDAO;
+import dao.BuyDAO;
 
 /**
- * Servlet implementation class UserDetail
+ * Servlet implementation class UUserDetail
  */
-@WebServlet("/UserDetail")
-public class UserDetail extends HttpServlet {
+@WebServlet("/UUserDetail")
+public class UUserDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UserDetail() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//管理者限定メニューチェッカー
+
+		//ログインチェック
 		HttpSession se = request.getSession();
 		UserBeans user =(UserBeans) se.getAttribute("userInfo");
 
-		//そもそもログインしてない
 		if(user==null) {
 			response.sendRedirect("Login");
 		}
-		//adminかどうかチェック
-		else if(user.getLogin_id().equals("admin")) {
+		System.out.println(user.getId());
 
-			String id =request.getParameter("id");
-			//参照先のデータを参照
-			UserDAO ud = new UserDAO();
+		//ユーザーIDを基に購入履歴出す
+		List<BuyDataBeans> bd =  BuyDAO.searchMyBuy(user.getId());
+		se.setAttribute("myDB", bd);
 
-			UserBeans u = UserDAO.searchID(id);
-			request.setAttribute("thisUser", u);
-		request.getRequestDispatcher(sc.AD_USER_DETAIL).forward(request, response);
-		}
-		else {
-			response.sendRedirect("index");
-		}
+	request.getRequestDispatcher(sc.USER_DETAIL).forward(request, response);
 	}
 
 	/**

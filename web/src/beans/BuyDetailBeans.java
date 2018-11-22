@@ -10,6 +10,8 @@ public class BuyDetailBeans {
 	private int buy_id;
 	private int last_price;
 
+	private String item_name;
+
 	public int getId() {
 		return id;
 	}
@@ -39,6 +41,12 @@ public class BuyDetailBeans {
 	}
 	public void setBuy_id(int buy_id) {
 		this.buy_id = buy_id;
+	}
+	public String getItem_name() {
+		return item_name;
+	}
+	public void setItem_name(String item_name) {
+		this.item_name = item_name;
 	}
 
 

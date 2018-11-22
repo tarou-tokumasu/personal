@@ -26,7 +26,9 @@ ${Err}
 <div class="jumbotron">
         <h5 class="mb-3 text-center">ユーザー情報更新</h5>
       <form action="UserUpdate" method="post">
+      <input type="hidden" name="url" value="${url}">
       <br><div class="ml-1">ユーザーID　${thisUser.login_id}</div><br>
+       <input type="hidden" class="form-control mb-3" value="${thisUser.id}" name="ID">
              <input type="hidden" class="form-control mb-3" value="${thisUser.login_id}" name="login_ID">
        <input type="text" class="form-control mb-3" value="${thisUser.user_name}" name="user_name">
       <input type="password" id="inputPassword" class="form-control mb-3" placeholder="パスワード変更したい場合は入力して下さい"  name="password">

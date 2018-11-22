@@ -34,10 +34,15 @@ public class UserDAO {
 	                return null;
 	            }
 
-	            int idData = rs.getInt("id");
-	            String loginIdData = rs.getString("login_id");
-	            String nameData = rs.getString("user_name");
-	            return new UserBeans(idData,loginIdData, nameData);
+	            UserBeans ub = new UserBeans();
+	            ub.setId(rs.getInt("id"));
+	            ub.setLogin_id(rs.getString("login_id"));
+	            ub.setUser_name(rs.getString("user_name"));
+	            ub.setAddress(rs.getString("address"));
+	            ub.setBirth_date(rs.getDate("birth_date"));
+	            ub.setPoint(rs.getInt("point"));
+
+	            return ub;
 
 	        } catch (SQLException e) {
 
@@ -211,7 +216,7 @@ public class UserDAO {
 
 
 
-	public UserBeans searchID(String id) {
+	public static UserBeans searchID(String id) {
 		Connection cone = null;
 
 		cone = DBManager.getConnection();
@@ -387,5 +392,31 @@ public class UserDAO {
 		}
 
 		return userList;
+	}
+
+
+
+	public static void updatePoint(int id, int point2) {
+		Connection cone = DBManager.getConnection();
+
+
+		//-だったら減らす+だったら足す
+		String sql = (point2 < 0) ? //ポイント貰える +41だったら
+				"UPDATE user SET point = point + ? WHERE id = ?":
+				"UPDATE user SET point = point - ? WHERE id = ?";
+
+
+
+		try {
+			PreparedStatement pst = cone.prepareStatement(sql);
+			pst.setInt(1, point2);
+			pst.setInt(2, id);
+			pst.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
 	}
 	}

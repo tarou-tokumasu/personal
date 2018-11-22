@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="jp">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
     <title>メイン画面</title>
     <!-- BootstrapのCSS読み込み -->
@@ -28,7 +28,9 @@
         <a class="p-2 text-dark" link href="Ad_Menu">管理者メニュー</a>
         </c:if>
        <a class="text-dark" link href="ranking.html">ランキング</a>
-        <a class="p-2 text-dark" link href="userdetail.html">ユーザー情報</a>
+       <c:if test="${userInfo!=null}">
+        <a class="p-2 text-dark" link href="UUserDetail">ユーザー情報</a>
+        </c:if>
          <a class="p-2 text-dark" link href="Cart">カートの確認</a>
         <a class="p-2 text-dark"  link href="mylist.html">マイリスト</a>
       </nav>

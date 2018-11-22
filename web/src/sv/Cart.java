@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.ItemBeans;
+import beans.UserBeans;
 import dao.DeliDAO;
 
 /**
@@ -76,9 +77,29 @@ public class Cart extends HttpServlet {
 		}
 
 		if(request.getParameter("action").equals("doRegi")) {
-
 			String deli = request.getParameter("deli");
-			System.out.println(deli);
+
+
+			//jspのほうで表示させてない時はnullで表示させた上で空欄だと""になる
+			String poin = request.getParameter("point");
+
+			if(poin != null && !(poin.equals(""))) {
+			//自分の手持ちオーバーしてるかチェック
+			UserBeans userInfo = (UserBeans) se.getAttribute("userInfo");
+			int point =Integer.parseInt(poin);
+			int mypoint = userInfo.getPoint();
+
+			if(point>mypoint) {
+				request.setAttribute("Err", "手持ちのポイントをオーバーしています");
+				request.getRequestDispatcher(sc.CART).forward(request, response);
+			}
+			else {
+			se.setAttribute("point", point);
+			}
+			}
+			else {
+			se.setAttribute("point", 0);
+			}
 
 			DeliBeans deliB = DeliDAO.getDeli(deli);
 

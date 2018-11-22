@@ -17,6 +17,7 @@ import beans.ItemBeans;
 import beans.UserBeans;
 import dao.BuyDAO;
 import dao.BuyDetailDAO;
+import dao.UserDAO;
 
 /**
  * Servlet implementation class Bought
@@ -60,9 +61,22 @@ public class Bought extends HttpServlet {
 		//時間
 		Date date = new Date();
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		//使用したポイント
+		int point = (int) se.getAttribute("point");
+		//生の整数 or 0
+
+		int point2 = (point>0) ? //使ったかどうか
+				point*=-1 ://使ったらマイナス数字にする ex:-200
+				total2/100;//使わなかったら1%還元 ex:41
+
+		System.out.println(point2);
 
 		//購入データ登録　購入IDも控える（でないと購入商品登録でどのタイミングで買ったかわからなくなる）
-		int buy_id = BuyDAO.addBuy(deli , total2 , us , sdf1.format(date));
+		//追加　ポイント使った場合（ポイント減らす）　ポイント使ってない場合（ポイント付与する）
+		int buy_id = BuyDAO.addBuy(deli , total2 , us , sdf1.format(date) , point2);
+
+		//ポイントを更新する
+		UserDAO.updatePoint(us.getId(), point2);
 
 		//購入した商品登録　カートの回数分ループ
 		for(ItemBeans c : cart) {
@@ -72,7 +86,14 @@ public class Bought extends HttpServlet {
 			bd.setLast_price(c.getitem_pricez());
 			BuyDetailDAO.addDetail(bd);
 		}
+		//セッションから色々消す
+		se.removeAttribute("cart");
+		se.removeAttribute("total1");
+		se.removeAttribute("total2");
+		se.removeAttribute("deli");
 
+		//リダレ
+		response.sendRedirect("BuyResult");
 	}
 
 }
