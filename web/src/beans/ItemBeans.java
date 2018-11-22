@@ -137,6 +137,7 @@ public class ItemBeans {
 		return  nf.format(item_price);
 	}
 
+	//割引後の値段を返す
 	public String getitem_pricew () {
 		int item_pricew = item_price * ( 100 - item_price_down ) / 100 ;
 		NumberFormat nf = NumberFormat.getCurrencyInstance();

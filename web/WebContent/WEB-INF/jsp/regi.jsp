@@ -55,7 +55,7 @@ ${notice}
 </c:if>
 
 <div class="jumbotron">
-<h5 class="text-center mt-3 mb-3">カート</h5>
+<h5 class="text-center mt-3 mb-3">購入確認</h5>
 <table class="table">
   <thead class="thead-dark">
     <tr class="text-center">
@@ -64,7 +64,7 @@ ${notice}
       <th></th>
     </tr>
   </thead>
-   <tbody><form action="Cart" method="post">
+   <tbody><form action="Bought" method="post">
   <c:forEach var="c" items="${cart}">
 
     <tr>
@@ -77,10 +77,6 @@ ${notice}
 
    <c:if test="${c.item_price_down !=0 }"> <font color="red">${c.item_price_down}%off</font> </c:if>
 
-      </td>
-      <td class="text-right">
- <input type="checkbox" value="${c.id}" name="delete">削除
-	</td>
     </tr>
  </c:forEach>
     </td></tr>
@@ -99,7 +95,7 @@ ${notice}
    </tr>
     <tr>
    <td class="">合計</td>
-   <td class="text-center">￥${total2}</td>
+   <td class="text-center">${total2}</td>
    <td class="center"></td>
 
 
@@ -109,7 +105,7 @@ ${notice}
 
 
     </div>
-	<button class="mt-3 btn  btn-secondary form-control" type="submit" name="action" value="doRegi">レジへ進む</button>
+	<input type="submit" class="mt-3 btn  btn-secondary form-control" value="購入する">
 
 	</form>
 	<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick="history.go(-2)">戻る</button>

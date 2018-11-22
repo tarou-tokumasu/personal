@@ -1,6 +1,7 @@
 package sv;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,9 +44,10 @@ public class Regi extends HttpServlet {
 		DeliBeans deli = (DeliBeans) se.getAttribute("deli");
 		int delip = deli.getDeli_price();
 		int total2 = (int) se.getAttribute("total") + delip;
-
-System.out.println(total2);
-		se.setAttribute("total2", total2);
+		NumberFormat nf = NumberFormat.getCurrencyInstance();
+		//カンマ付けてない総額が必要（db登録用）
+		se.setAttribute("total1", total2);
+		se.setAttribute("total2", nf.format(total2));
 
 		request.getRequestDispatcher(sc.REGI).forward(request, response);
 		}
