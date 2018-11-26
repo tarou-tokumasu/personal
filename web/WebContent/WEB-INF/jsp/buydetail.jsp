@@ -52,6 +52,10 @@
       <th>購入日時</th>
       <th>総額</th>
       <th>配送方法</th>
+      <c:choose>
+      <c:when test="${iDB.pointmov >0}"><th>獲得ポイント</th></c:when>
+       <c:when test="${iDB.pointmov <0}"><th>消費ポイント</th></c:when>
+      </c:choose>
     </tr>
   </thead>
   <tbody>
@@ -59,6 +63,7 @@
        <td class="text-center"> ${iDB.formatDate}</td>
       <td class="text-right">${iDB.item_pricec}</td>
       <td class="text-center">${iDB.deli_name}</td>
+            <td class="text-right">${iDB.pointmov}</td>
     </tr>
     </table>
     </div>

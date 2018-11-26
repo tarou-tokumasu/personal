@@ -79,8 +79,7 @@ public class BuyDAO {
 
 		ArrayList<BuyDataBeans> bdl =new  ArrayList<BuyDataBeans>();
 
-		String sql = "SELECT * FROM buy inner join deli ON buy.deli_id = deli.id WHERE user_id = ?";
-
+		String sql = "SELECT * FROM buy inner join deli ON buy.deli_id = deli.id WHERE user_id = ? GROUP BY buy_date desc";
 
 		try {
 			PreparedStatement pst = cone.prepareStatement(sql);
@@ -95,6 +94,7 @@ public class BuyDAO {
 			bd.setDeli_name(rs.getString("deli_name"));
 			bd.setDeli_price(rs.getInt("deli_price"));
 			bd.setTotal_price(rs.getInt("total_price"));
+			bd.setPointmov(rs.getInt("movpoint"));
 			bdl.add(bd);
 			}
 
@@ -138,6 +138,7 @@ public class BuyDAO {
 			bd.setDeli_name(rs.getString("deli_name"));
 			bd.setDeli_price(rs.getInt("deli_price"));
 			bd.setTotal_price(rs.getInt("total_price"));
+			bd.setPointmov(rs.getInt("movpoint"));
 			}
 
 			return bd;

@@ -31,9 +31,14 @@ public class Cart extends HttpServlet {
 
 		//カートの中身全部足したい
 		ArrayList<ItemBeans> IL = (ArrayList<ItemBeans>) se.getAttribute("cart");
+	    System.out.println("IL" + IL);
+		if(IL != null) {
 		int total = sc.getTotal(IL);
-
 		se.setAttribute("total", total);
+	    }
+		else {
+		request.setAttribute("items", "1");
+		}
 		se.setAttribute("deliList", deliList);
 		request.getRequestDispatcher(sc.CART).forward(request, response);
 

@@ -86,13 +86,19 @@ ${notice}
     </td></tr>
 
  <tr></tr>
-
+<c:if test="${items!=1}">
    <tr>
    <td class="">小計</td>
    <td class="text-center">￥${total}</td>
    <td class="center"></td>
-
 </tr>
+</c:if>
+<c:if test="${items==1}">
+   <tr>
+   <td class="">カートに商品が入っていません</td>
+</tr>
+</c:if>
+
 <c:if test="${userInfo!= null}">
 <tr> <td></td><td></td><td class="text-right">
     <select name="deli">
@@ -113,7 +119,9 @@ ${notice}
 
 
     </div>
+  <c:if test="${items!=1}">
     <button class="mt-3 btn  btn-secondary form-control" type="submit" name="action" value="doDel">チェックされた商品を削除</button>
+    </c:if>
 	<button class="mt-3 btn  btn-secondary form-control" type="submit" name="action" value="doRegi">レジへ進む（要ログイン）</button>
 
 	</form>

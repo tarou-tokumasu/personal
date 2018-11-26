@@ -400,13 +400,8 @@ public class UserDAO {
 		Connection cone = DBManager.getConnection();
 
 
-		//-だったら減らす+だったら足す
-		String sql = (point2 < 0) ? //ポイント貰える +41だったら
-				"UPDATE user SET point = point + ? WHERE id = ?":
-				"UPDATE user SET point = point - ? WHERE id = ?";
-
-
-
+		//ポイント更新
+		String sql ="UPDATE user SET point = point + ? WHERE id = ?";
 		try {
 			PreparedStatement pst = cone.prepareStatement(sql);
 			pst.setInt(1, point2);

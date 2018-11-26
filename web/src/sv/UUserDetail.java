@@ -41,6 +41,20 @@ public class UUserDetail extends HttpServlet {
 		List<BuyDataBeans> bd =  BuyDAO.searchMyBuy(user.getId());
 		se.setAttribute("myDB", bd);
 
+		//今何ページ目かをURLから引っ張り出す
+		int page = Integer.parseInt(request.getParameter("page") == null ? "1": request.getParameter("page"));
+
+		//履歴いくつある？
+		double size = bd.size();
+
+		//いくつページいる？
+		int max = (int)Math.ceil(size / sc.ITEMS);
+
+		request.setAttribute("items", sc.ITEMS);
+		request.setAttribute("max", max);
+		request.setAttribute("page", page);
+
+
 	request.getRequestDispatcher(sc.USER_DETAIL).forward(request, response);
 	}
 

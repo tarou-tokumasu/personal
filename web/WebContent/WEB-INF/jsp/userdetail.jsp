@@ -77,7 +77,7 @@
     </tr>
   </thead>
   <tbody>
-    <c:forEach var="c" items="${myDB}">
+  <c:forEach var="c" begin="${items * (page - 1)}" end="${page * items - 1}" items="${myDB}">
     <tr>
        <td class="text-center">  <a href="BuyDetail?id=${c.id}"><img src="img/search.png"></a>　${c.formatDate}</td>
       <td class="text-right">${c.item_pricec}</td>
@@ -85,6 +85,12 @@
     </tr>
     </c:forEach>
     </table>
+    <div class="text-center">
+    <c:forEach begin="1" end="${max}" varStatus="s">
+    		<c:if test="${page ==s.count }"> <a  class="text-light bg-dark strong "link href="UUserDetail?page=${s.count}">${s.count} </a> </c:if>
+			<c:if test="${page !=s.count }"> <a  class="text-dark strong"link href="UUserDetail?page=${s.count}">${s.count} </a></c:if>
+    			</c:forEach>
+    			</div>
     </div>
 
         <button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="index">戻る</button>

@@ -115,7 +115,8 @@ ${Err}
     </div>
     <div class="text-center">
     			<c:forEach begin="1" end="${max}" varStatus="s">
-			<a  class="text-dark strong"link href="SearchResult?page=${s.count}">${s.count} </a>
+			    		<c:if test="${page ==s.count }"> <a  class="text-light bg-dark strong "link href="SearchResult?page=${s.count}">${s.count} </a> </c:if>
+			<c:if test="${page !=s.count }"> <a  class="text-dark strong"link href="SearchResult?page=${s.count}">${s.count} </a></c:if>
     			</c:forEach>
 
     </div>

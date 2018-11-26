@@ -17,6 +17,8 @@ public class BuyDataBeans {
 	private String deli_name;
 	private int deli_price;
 
+	private int pointmov;
+
 	public int getId() {
 		return id;
 	}
@@ -75,5 +77,11 @@ public class BuyDataBeans {
 	}
 	public void setDeli_price(int deli_price) {
 		this.deli_price = deli_price;
+	}
+	public int getPointmov() {
+		return pointmov;
+	}
+	public void setPointmov(int pointmov) {
+		this.pointmov = pointmov;
 	}
 }
