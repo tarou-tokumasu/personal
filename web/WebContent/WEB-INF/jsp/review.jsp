@@ -3,14 +3,15 @@
 <!DOCTYPE html>
 <html lang="jp">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-    <title>商品詳細</title>
-    <!-- Bootstrap��CSS�ǂݍ��� -->
+    <title>メイン画面</title>
+    <!-- BootstrapのCSS読み込み -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- jQuery�ǂݍ��� -->
+    <!-- jQuery読み込み -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Bootstrap��JS�ǂݍ��� -->
+    <!-- BootstrapのJS読み込み -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="js/bootstrap.min.js"></script>
 	</head>
 <body class="backg">
@@ -26,9 +27,11 @@
 		<c:if test="${userInfo.login_id=='admin'}">
         <a class="p-2 text-dark" link href="Ad_Menu">管理者メニュー</a>
         </c:if>
-       <a class="text-dark" link href="ranking.html">ランキング</a>
-        <a class="p-2 text-dark" link href="userdetail.html">ユーザー情報</a>
-         <a class="p-2 text-dark" link href="cart.html">カートの確認</a>
+       <a class="text-dark" link href="Ranking">ランキング</a>
+       <c:if test="${userInfo!=null}">
+        <a class="p-2 text-dark" link href="UUserDetail">ユーザー情報</a>
+        </c:if>
+         <a class="p-2 text-dark" link href="Cart">カートの確認</a>
         <a class="p-2 text-dark"  link href="mylist.html">マイリスト</a>
       </nav>
       <c:if test="${userInfo !=null}">
@@ -61,8 +64,7 @@ ${notice}
 			<div class="p-2">${thisItem.item_cate}</div>
 			<div class="p-2">${thisItem.item_maker}</div>
 			<div class="p-2">評価（未実装）
-			<c:if test="${rev==true}">
-			<a class="text-dark" link href="Review?id=${thisItem.id}" ><b>レビューする</b></a></c:if></div>
+			</div>
 
 			<div class="mt-auto p-2">
 			 <c:choose>
@@ -78,36 +80,40 @@ ${notice}
 </div>
 <hr>
 
-<form class="text-right">
- <select name="rev">
-<option value="1">新着順</option>
-<option value="2">評価順</option>
-</select>
-</form>
 <br>
-
-<c:forEach var="c" items="${revs}">
-		<div class="row border bg-light waku2 mx-auto">
-		<div class="col-sm-1">
-		<c:if test="${c.vote==1}"><div class="mx-auto"><img src=img/upvote.png></div></c:if>
-		<c:if test="${c.vote==-1}"><div class="mx-auto"><img src=img/downvote.png></div></c:if>
+		<div class="row border bg-white waku2 mx-auto">
+		<div class="col-sm-2 text-center">
+		評価
+		<form action="Review" method="post">
+		<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="vote" id="inlineRadio1" value="1" <c:if test="${def.vote==1}"> checked="checked"</c:if>>
+  <label class="form-check-label" for="inlineRadio1"><img src="img/upvote.png"></label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="vote" id="inlineRadio1" value="-1" <c:if test="${def.vote==-1}"> checked="checked"</c:if>>
+  <label class="form-check-label" for="inlineRadio1"><img src="img/downvote.png"></label>
+</div>
 		</div>
 
 		<div class="col">
 		<div class="d-flex align-items-start flex-column">
-			<div class="p-2">${c.reviewer}</div>
-			<div class="p-2">${c.review }</div>
-			<div class="p-2"><small>${c.formaDate}</small></div>
-			<div class="mx-auto p-2"><b>${c.re_vote}</b>このレビューは参考になりましたか？
-			<button class="btn  btn-secondary" type="submit" onClick=location.href="itemdetail.html">はい</button>
-			 <button class="btn  btn-secondary" type="submit" onClick=location.href="itemdetail.html">いいえ</button></div>
+
+			<div class="p-2">本文<br>
+	<div class="form-group">
+    <textarea class="form-control" name="review" placeholder="空欄ok" rows="5" cols="100">${def.review}</textarea>
+   <input type="submit" class="btn btn-secondary form-control" value="投稿" onclick="return confirm('投稿してよろしいですか？');">
+    <input type="hidden" name = "item" value="${thisItem.id}">
+     <input type="hidden" name = "user" value="${userInfo.id}">
+    </form>
+  </div>
+
+
 			</div>
 		</div>
 		</div>
-</c:forEach>
-		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="AddCart?id=${thisItem.id}">カートに入れる</button>
-		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick="history.back()">戻る</button>
 
 </div>
+
+		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="UItemDetail?id=${thisItem.id}">戻る</button>
 </body>
 </html>

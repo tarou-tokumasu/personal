@@ -1,7 +1,6 @@
 package sv;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,16 +17,16 @@ import dao.ItemDAO;
 import dao.ReviewDAO;
 
 /**
- * Servlet implementation class UItemDetail
+ * Servlet implementation class Review
  */
-@WebServlet("/UItemDetail")
-public class UItemDetail extends HttpServlet {
+@WebServlet("/Review")
+public class Review extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UItemDetail() {
+    public Review() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -47,26 +46,43 @@ public class UItemDetail extends HttpServlet {
 		request.setAttribute("thisItem", i);
 
 		//レビューする権利持ってる？
-		if(user!=null) {
-		boolean rev = BuyDAO.checkBuy(user.getId() , idd);
-		request.setAttribute("rev", rev);
-		System.out.println("権利は" + rev);
+		if(user!=null && BuyDAO.checkBuy(user.getId() , idd)) {
+
+		//レビュー書いてたらデフォルトに設置する
+		ReviewBeans re = ReviewDAO.checkRev(user.getId() , idd);
+		request.setAttribute("def", re);
+		request.getRequestDispatcher(sc.ITEM_REVIEW).forward(request, response);
 		}
-
-		//レビュー表示用
-		List<ReviewBeans> revs = ReviewDAO.getReviewByID(idd);
-		request.setAttribute("revs", revs);
-
-
-		request.getRequestDispatcher(sc.ITEM_DETAIL).forward(request, response);
+		else {//持ってないなら追い返す
+		response.sendRedirect("index");
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+
+
+
+		//フォームからデータ読み込み
+		int vote =  Integer.parseInt(request.getParameter("vote"));
+		String review = request.getParameter("review");
+		String item_id = request.getParameter("item");
+		int user_id = Integer.parseInt(request.getParameter("user"));
+
+		ReviewBeans re = ReviewDAO.checkRev(user_id , item_id);
+		System.out.println("レビューしてる？" + re);
+		//レビュー経験済みかチェック
+		if (re == null) {
+		ReviewDAO.addReview(vote,item_id,user_id,review);
+		request.setAttribute("msg", "レビューの投稿が完了しました");
+		}
+		else {
+		ReviewDAO.updateReview(vote,item_id,user_id,review);
+		request.setAttribute("msg", "レビューの更新が完了しました");}
+
+		request.getRequestDispatcher(sc.REVIEW_FIN).forward(request, response);
 	}
 
 }

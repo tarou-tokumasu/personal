@@ -119,7 +119,7 @@ return null;
 
 	}
 
-	public List<CateBeans> getAllCate() {
+	public static List<CateBeans> getAllCate() {
 		Connection cone = null;
 		cone = DBManager.getConnection();
 
@@ -537,5 +537,99 @@ return null;
 
 		return itemList;
 
+	}
+
+	public static List<ItemBeans> getRanking() {
+		ArrayList<ItemBeans> ranking = new ArrayList<ItemBeans>();
+
+		Connection cone = DBManager.getConnection();
+
+		String sql= "select * , COUNT(*)from buy_detail " +
+				"inner join item on item.id = buy_detail.item_id " +
+				"inner join cate on item.item_cate = cate.id " +
+				"inner join maker on item.item_maker = maker.id " +
+				"group by item_id order by count(*) desc";
+		try {
+			Statement st = cone.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+
+			while(rs.next()) {
+				ItemBeans i = new ItemBeans();
+				i.setId(rs.getInt("item_id"));
+				i.setCate_id(rs.getInt("cate.id"));
+				i.setItem_cate(rs.getString("cate_name"));
+				i.setItem_maker(rs.getString("maker_name"));
+				i.setMaker_id(rs.getInt("maker.id"));
+				i.setItem_name(rs.getString("item_name"));
+				i.setItem_price(rs.getInt("item_price"));
+				i.setItem_price_down(rs.getInt("item_price_down"));
+				i.setItem_pic(rs.getString("item_pic"));
+				i.setSales(rs.getInt("count(*)"));
+				ranking.add(i);
+			}
+			return ranking;
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				cone.close();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+
+		return ranking;
+	}
+
+	public static List<ItemBeans> getRanking(int idd) {
+		ArrayList<ItemBeans> ranking = new ArrayList<ItemBeans>();
+
+		Connection cone = DBManager.getConnection();
+
+		String sql= "select * , COUNT(*)from buy_detail " +
+				"inner join item on item.id = buy_detail.item_id " +
+				"inner join cate on item.item_cate = cate.id " +
+				"inner join maker on item.item_maker = maker.id " +
+				"where item_cate = ? " +
+				"group by item_id order by count(*) desc";
+		try {
+			PreparedStatement st = cone.prepareStatement(sql);
+			st.setInt(1, idd);
+			ResultSet rs = st.executeQuery();
+
+			while(rs.next()) {
+				ItemBeans i = new ItemBeans();
+				i.setId(rs.getInt("item_id"));
+				i.setCate_id(rs.getInt("cate.id"));
+				i.setItem_cate(rs.getString("cate_name"));
+				i.setItem_maker(rs.getString("maker_name"));
+				i.setMaker_id(rs.getInt("maker.id"));
+				i.setItem_name(rs.getString("item_name"));
+				i.setItem_price(rs.getInt("item_price"));
+				i.setItem_price_down(rs.getInt("item_price_down"));
+				i.setItem_pic(rs.getString("item_pic"));
+				i.setSales(rs.getInt("count(*)"));
+				ranking.add(i);
+			}
+			return ranking;
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				cone.close();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+
+		return ranking;
 	}
 }

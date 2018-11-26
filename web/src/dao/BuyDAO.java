@@ -158,4 +158,43 @@ public class BuyDAO {
 
 		return bd;
 	}
+
+	public static boolean checkBuy(int i, String idd) {
+
+		Connection cone = DBManager.getConnection();
+
+		String sql = "select * from buy " +
+				"inner join buy_detail on buy.id = buy_detail.buy_id " +
+				"where user_id = ? AND item_id=? " ;
+
+
+		BuyDataBeans bd = new BuyDataBeans();
+
+		try {
+			PreparedStatement pst = cone.prepareStatement(sql);
+			pst.setInt(1, i);
+			pst.setString(2, idd);
+			ResultSet rs =pst.executeQuery();
+
+			if(!rs.next()) {
+				return false;
+			}
+
+			return true;
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}finally
+		{
+			try {
+				cone.close();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+
+		return true;
+	}
 	}

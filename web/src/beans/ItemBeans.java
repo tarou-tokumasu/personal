@@ -17,6 +17,8 @@ public class ItemBeans {
 	private Date item_date;
 	private int item_price_down;
 
+	private int sales;
+
 
 	public ItemBeans(int id,String item_name ,  int cate_id , String item_cate2,  int maker_id ,String item_maker2, int item_price, String item_pic, Date item_date, int item_price_down) {
 		this.id=id;
@@ -29,6 +31,11 @@ public class ItemBeans {
 		this.item_pic=item_pic;
 		this.item_date=item_date;
 		this.item_price_down=item_price_down;
+	}
+
+
+	public ItemBeans() {
+		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
 
@@ -148,5 +155,15 @@ public class ItemBeans {
 	public int getitem_pricez() {
 		return item_price * ( 100 - item_price_down ) / 100 ;
 
+	}
+
+
+	public int getSales() {
+		return sales;
+	}
+
+
+	public void setSales(int sales) {
+		this.sales = sales;
 	}
 }

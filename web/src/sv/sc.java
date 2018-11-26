@@ -50,6 +50,12 @@ public class sc {
 
 	static final String BUY_DETAIL = "/WEB-INF/jsp/buydetail.jsp";
 
+	public static final String RANKING = "/WEB-INF/jsp/ranking.jsp";
+
+	public static final String ITEM_REVIEW = "/WEB-INF/jsp/review.jsp";
+
+	public static final String REVIEW_FIN ="/WEB-INF/jsp/reviewfin.jsp";
+
 	//便利メソッド
 
 	//カート内全部足す

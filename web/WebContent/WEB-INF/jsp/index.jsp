@@ -27,7 +27,7 @@
 		<c:if test="${userInfo.login_id=='admin'}">
         <a class="p-2 text-dark" link href="Ad_Menu">管理者メニュー</a>
         </c:if>
-       <a class="text-dark" link href="ranking.html">ランキング</a>
+       <a class="text-dark" link href="Ranking">ランキング</a>
        <c:if test="${userInfo!=null}">
         <a class="p-2 text-dark" link href="UUserDetail">ユーザー情報</a>
         </c:if>

@@ -1,6 +1,7 @@
 package sv;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -8,26 +9,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import beans.CateBeans;
 import beans.ItemBeans;
-import beans.ReviewBeans;
-import beans.UserBeans;
-import dao.BuyDAO;
 import dao.ItemDAO;
-import dao.ReviewDAO;
 
 /**
- * Servlet implementation class UItemDetail
+ * Servlet implementation class Ranking
  */
-@WebServlet("/UItemDetail")
-public class UItemDetail extends HttpServlet {
+@WebServlet("/Ranking")
+public class Ranking extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UItemDetail() {
+    public Ranking() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,29 +33,27 @@ public class UItemDetail extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession se = request.getSession();
 
-		//データ貰う
-		UserBeans user = (UserBeans) se.getAttribute("userInfo");
-		String idd =request.getParameter("id");
-		//参照先のデータを取得
-		ItemDAO id = new ItemDAO();
-		ItemBeans i = id.searchID(idd);
-		request.setAttribute("thisItem", i);
+		//何のランキング？（トップから来たら総合）
+		String id = (request.getParameter("id") ==null)? "99" : request.getParameter("id");
+		int idd = Integer.parseInt(id);
 
-		//レビューする権利持ってる？
-		if(user!=null) {
-		boolean rev = BuyDAO.checkBuy(user.getId() , idd);
-		request.setAttribute("rev", rev);
-		System.out.println("権利は" + rev);
-		}
-
-		//レビュー表示用
-		List<ReviewBeans> revs = ReviewDAO.getReviewByID(idd);
-		request.setAttribute("revs", revs);
+		//ランキング配列取得(拡張if）
+		List<ItemBeans> ranking = (idd==99)? ItemDAO.getRanking():
+			ItemDAO.getRanking(idd);
 
 
-		request.getRequestDispatcher(sc.ITEM_DETAIL).forward(request, response);
+		request.setAttribute("ranking", ranking);
+
+		//各種配列用意
+		List<CateBeans> cateList = new ArrayList<CateBeans>();
+		cateList = ItemDAO.getAllCate();
+
+
+		request.setAttribute("scate", id);
+		request.setAttribute("cateList", cateList);
+		request.getRequestDispatcher(sc.RANKING).forward(request, response);
+
 	}
 
 	/**
