@@ -50,12 +50,22 @@ public class UItemDetail extends HttpServlet {
 		if(user!=null) {
 		boolean rev = BuyDAO.checkBuy(user.getId() , idd);
 		request.setAttribute("rev", rev);
-		System.out.println("権利は" + rev);
 		}
 
 		//レビュー表示用
 		List<ReviewBeans> revs = ReviewDAO.getReviewByID(idd);
-		request.setAttribute("revs", revs);
+		se.setAttribute("revs", revs);
+		//商品評価獲得用
+		ItemBeans revote = ItemDAO.getVote(idd);
+		request.setAttribute("revote", revote);
+		//レビューを評価したかチェック用
+		if(user!=null) {
+		int recheck = ReviewDAO.checkRerev(user.getId() , idd);
+		System.out.println(recheck);
+
+		request.setAttribute("recheck", recheck);
+		}
+
 
 
 		request.getRequestDispatcher(sc.ITEM_DETAIL).forward(request, response);
@@ -65,8 +75,12 @@ public class UItemDetail extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		//レビュー削除
+		String id = request.getParameter("id");
+		String idd = request.getParameter("idd");
+		ReviewDAO.deleteReview(id);
+
+		response.sendRedirect("UItemDetail?id=" + idd);
 	}
 
 }

@@ -632,4 +632,44 @@ return null;
 
 		return ranking;
 	}
+
+	public static ItemBeans getVote(String idd) {
+		Connection cone = null;
+		cone = DBManager.getConnection();
+
+		ItemBeans ib = new ItemBeans();
+
+		String sql = "select count(vote=-1 or null) as downvote, count(vote=1 or null) as upvote from review where item_id = ?";
+
+		try {
+			PreparedStatement pst = cone.prepareStatement(sql);
+			pst.setString(1,idd);
+			ResultSet rs = pst.executeQuery();
+
+			if(!rs.next()) {
+				return null;
+			}
+
+			ib.setUpvote(rs.getInt("upvote"));
+			ib.setDownvote(rs.getInt("downvote"));
+
+
+			return ib;
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}finally {try {
+			cone.close();
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}}
+
+
+
+
+
+		return ib;
+	}
 }

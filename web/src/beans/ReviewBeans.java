@@ -10,7 +10,7 @@ public class ReviewBeans {
 	private int user_id; //誰が書いたか
 	private String review; //本文
 	private int vote; //1で高評価　-1で低評価
-	private Date re_date;
+	private Date re_date;//いつ書いたか
 	private int re_vote; //レビュー自体の評価
 
 	private String reviewer ;//レビューしたユーザー名
@@ -122,4 +122,13 @@ public class ReviewBeans {
 		return sdf.format(re_date);
 	}
 
+	//+と-つける
+	public String getplus() {
+		String str= null;
+			str = (re_vote >=0) ?
+				"+" + re_vote:
+				"" + re_vote;
+
+		return str;
+	}
 }

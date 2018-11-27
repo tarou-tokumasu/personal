@@ -18,6 +18,11 @@ public class ItemBeans {
 	private int item_price_down;
 
 	private int sales;
+	//評価した人たち
+	private int upvote;
+	private int downvote;
+
+
 
 
 	public ItemBeans(int id,String item_name ,  int cate_id , String item_cate2,  int maker_id ,String item_maker2, int item_price, String item_pic, Date item_date, int item_price_down) {
@@ -166,4 +171,34 @@ public class ItemBeans {
 	public void setSales(int sales) {
 		this.sales = sales;
 	}
+
+
+	public int getUpvote() {
+		return upvote;
+	}
+
+
+	public void setUpvote(int upvote) {
+		this.upvote = upvote;
+	}
+
+
+	public int getDownvote() {
+		return downvote;
+	}
+
+
+	public void setDownvote(int downvote) {
+		this.downvote = downvote;
+	}
+
+	//%表示で返す
+	public String getpercent() {
+
+		int  test = Math.round(upvote / ( downvote + upvote ) * 100);
+		String st = test + "％";
+		return st;
+
+	}
+
 }

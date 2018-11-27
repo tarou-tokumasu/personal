@@ -60,7 +60,11 @@ ${notice}
 			<div class="p-2 flex-glow-1" >${thisItem.item_name}</div>
 			<div class="p-2">${thisItem.item_cate}</div>
 			<div class="p-2">${thisItem.item_maker}</div>
-			<div class="p-2">評価（未実装）
+			<c:if test="${revote.upvote>0 or revote.downvote<0 }"><div class="p-2"><b class="text-success">↑${revote.upvote}</b> / <b class="text-danger">${revote.downvote}↓</b>
+			 <small>${revote.percent}のユーザーがこの商品を高評価しました</small></c:if>
+			 <c:if test="${revote.upvote==0}"><div class="p-2">
+			 <small>まだ誰もレビュー・評価をしていません。</small></c:if>
+
 			<c:if test="${rev==true}">
 			<a class="text-dark" link href="Review?id=${thisItem.id}" ><b>レビューする</b></a></c:if></div>
 
@@ -78,16 +82,16 @@ ${notice}
 </div>
 <hr>
 
-<form class="text-right">
- <select name="rev">
-<option value="1">新着順</option>
-<option value="2">評価順</option>
+<c:if test="${revs!=null}">
+<select onChange="top.location.href=value">
+<option value="SortReview?sort=1&id=${thisItem.id}" <c:if test="${sort2==1}"> selected="selected"</c:if>> 新着順</option>
+<option value="SortReview?sort=2&id=${thisItem.id}"<c:if test="${sort2==2}"> selected="selected"</c:if>>評価順</option>
 </select>
-</form>
+</c:if>
 <br>
 
 <c:forEach var="c" items="${revs}">
-		<div class="row border bg-light waku2 mx-auto">
+		<div class="row border bg-light waku2 mx-auto mb-3">
 		<div class="col-sm-1">
 		<c:if test="${c.vote==1}"><div class="mx-auto"><img src=img/upvote.png></div></c:if>
 		<c:if test="${c.vote==-1}"><div class="mx-auto"><img src=img/downvote.png></div></c:if>
@@ -98,12 +102,30 @@ ${notice}
 			<div class="p-2">${c.reviewer}</div>
 			<div class="p-2">${c.review }</div>
 			<div class="p-2"><small>${c.formaDate}</small></div>
-			<div class="mx-auto p-2"><b>${c.re_vote}</b>このレビューは参考になりましたか？
-			<button class="btn  btn-secondary" type="submit" onClick=location.href="itemdetail.html">はい</button>
-			 <button class="btn  btn-secondary" type="submit" onClick=location.href="itemdetail.html">いいえ</button></div>
+<form  class="ml-auto" action="UItemDetail?id=${c.id}&idd=${thisItem.id}" method="post"><div class="mx-auto p-2"><b>${c.plus}</b>
+
+			<c:if test="${c.user_id == userInfo.id or userInfo.id==1}">
+			 <input type="submit" class="btn btn-secondary" value="削除"onclick="return confirm('本当に削除してよろしいですか？');">
+			 </c:if>
+
+			<c:if test="${c.user_id != userInfo.id and userInfo!=null}">
+			このレビューは参考になりましたか？
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-secondary <c:if test="${recheck==1}">active</c:if>">
+    <input type="radio" name="options"  onChange=location.href="Rereview?vote=1&recheck=${recheck}&id=${c.id}&idd=${c.item_id}"  autocomplete="off"> はい
+  </label>
+  <label class="btn btn-secondary <c:if test="${recheck==-1}">active</c:if>">
+    <input type="radio" name="options"  onChange=location.href="Rereview?vote=-1&recheck=${recheck}&id=${c.id}&idd=${c.item_id}" autocomplete="off"  > いいえ
+  </label>
+</div>
+			  </c:if>
+			   </form>
+			 </div>
+			 </div>
 			</div>
 		</div>
-		</div>
+
+
 </c:forEach>
 		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="AddCart?id=${thisItem.id}">カートに入れる</button>
 		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick="history.back()">戻る</button>
