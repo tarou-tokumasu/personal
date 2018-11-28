@@ -195,7 +195,11 @@ public class ItemBeans {
 	//%表示で返す
 	public String getpercent() {
 
-		int  test = Math.round(upvote / ( downvote + upvote ) * 100);
+		double upvote2 = upvote;
+		double downvote2 = downvote;
+
+		double  test = Math.round(upvote2 / ( downvote2 + upvote2 ) * 1000);
+		test/=10;
 		String st = test + "％";
 		return st;
 

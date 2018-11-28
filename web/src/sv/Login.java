@@ -37,7 +37,7 @@ public class Login extends HttpServlet {
 
 		//なんか入ってるのでメイン画面に追い返す
 		if(u!=null) {
-		response.sendRedirect("index");
+		response.sendRedirect("Index");
 		}
 		else {
 

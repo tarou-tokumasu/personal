@@ -66,8 +66,8 @@ public class UserUpdate extends HttpServlet {
 		String id = request.getParameter("ID");
 		String login_ID = request.getParameter("login_ID");
 		String user_name =request.getParameter("user_name");
-		String password = request.getParameter("password");
-		String kakunin = request.getParameter("kakunin");
+		String password = sc.encrypt(request.getParameter("password"));
+		String kakunin =  sc.encrypt(request.getParameter("kakunin"));
 		String birth_date = request.getParameter("birth_date");
 		String address = request.getParameter("address");
 		Date update_date = new Date();

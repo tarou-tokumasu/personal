@@ -108,7 +108,7 @@ ${Err}
     </c:choose>
 
     </td>
-      <td class="text-right">未実装</td>
+      <td class="text-right"><b class="text-success">↑${c.upvote}</b> / <b class="text-danger">${c.downvote}↓</b></td>
     </tr>
   </c:forEach>
     </table>

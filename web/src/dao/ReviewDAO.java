@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import beans.ReReviewBeans;
 import beans.ReviewBeans;
 import db.DBManager;
 
@@ -22,10 +23,9 @@ public class ReviewDAO {
 				+ "review,"
 				+ "item_id,"
 				+ "user_id,"
-				+ "re_date,"
-				+ "re_vote) "
+				+ "re_date) "
 				+ " VALUES ("
-				+ "? ,? ,? ,? ,? ,0)";
+				+ "? ,? ,? ,? ,?)";
 
 
 		try {
@@ -236,30 +236,33 @@ public class ReviewDAO {
 
 	}
 
-	public static int checkRerev(int id, String idd) {
+	public static List<ReReviewBeans> checkRerev(int id) {
 		Connection cone = DBManager.getConnection();
+		ArrayList<ReReviewBeans> recheck = new ArrayList<ReReviewBeans>();
 
-		String sql ="select * from rereview WHERE user_id= ? AND review_id= ? ";
+
+		String sql ="select * from rereview WHERE user_id= ?";
 
 
 		try {
 			PreparedStatement pst = cone.prepareStatement(sql);
 			pst.setInt(1, id);
-			pst.setString(2, idd);
 			ResultSet rs = pst.executeQuery();
 
-			//評価した
-			if(rs.next()) {
-				if(rs.getInt("vote")==1) { //↑
-				return 1;
-				}
-				else { //↓
-				return -1;
-				}
+			while(rs.next()) {
+				ReReviewBeans re = new ReReviewBeans();
+
+				re.setReview_id(rs.getInt("review_id"));
+				re.setUser_id(rs.getInt("user_id"));
+				re.setVote(rs.getInt("vote"));
+				recheck.add(re);
 			}
-			else {//評価してない
-				return 0;
+
+			if(recheck.isEmpty()) {
+				return null;
 			}
+
+
 
 		} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
@@ -274,7 +277,7 @@ public class ReviewDAO {
 		}
 
 
-		return 0;
+		return recheck;
 	}
 
 	public static void deleteReReview(int id, String item_id) {

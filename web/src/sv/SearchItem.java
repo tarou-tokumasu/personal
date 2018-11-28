@@ -67,7 +67,7 @@ public class SearchItem extends HttpServlet {
 		case 4://割り引かれてる順
 			il.sort((b,a)-> a.getItem_price_down() - b.getItem_price_down() );
 		case 5://評価
-			//TODO:未実装
+			il.sort((b,a)-> a.getUpvote() - b.getUpvote() );
 		}
 
 
@@ -97,9 +97,10 @@ public class SearchItem extends HttpServlet {
 			String since = request.getParameter("since");
 			String until = request.getParameter("until");
 
-			String sql="SELECT * FROM item "
+			String sql="SELECT * , count(vote=1 or null) as upvote , count(vote=-1 or null) as downvote FROM item "
 					+ " inner join maker ON item.item_maker = maker.id "
-					+ " inner join cate ON  item.item_cate = cate.id WHERE ";
+					+ " inner join cate ON  item.item_cate = cate.id "
+					+ " LEFT join review ON item.id = review.item_id WHERE ";
 			boolean cm =false; //and入れるかどうか trueで前になんかしら居るというのを示す
 
 			if(item_name != "") {//商品名入ってる？
@@ -142,7 +143,7 @@ public class SearchItem extends HttpServlet {
 
 			if(cm==true)//検索条件どれか入ってる？
 			{
-
+				sql= sql + " group by item.id";
 			List<ItemBeans> searchList = ud.getALLItem(sql);
 
 			// リクエストスコープにユーザ一覧情報をセット

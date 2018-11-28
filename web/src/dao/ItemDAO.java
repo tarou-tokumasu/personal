@@ -26,9 +26,11 @@ public class ItemDAO {
 		Connection cone = null;
 		cone = DBManager.getConnection();
 
-		String sql= "SELECT * FROM item "
+		String sql= "SELECT * ,count(vote=1 or null) as upvote , count(vote=-1 or null) as downvote FROM item "
 				+ " inner join maker ON item.item_maker = maker.id "
-				+ " inner join cate ON  item.item_cate = cate.id;";
+				+ " inner join cate ON  item.item_cate = cate.id"
+				+ " left  join review ON item.id = review.item_id "
+				+ " GROUP BY item.id";
 
 		try {
 			Statement st = cone.createStatement();
@@ -49,6 +51,9 @@ public class ItemDAO {
 
 
                 ItemBeans item = new ItemBeans(id, item_name ,cate_id, item_cate ,maker_id, item_maker , item_price , item_pic , item_date , item_price_down);
+
+                item.setUpvote(rs.getInt("upvote"));
+                item.setDownvote(rs.getInt("downvote"));
 
                 itemList.add(item);
 
@@ -76,7 +81,8 @@ public class ItemDAO {
 		Connection cone = null;
 		cone = DBManager.getConnection();
 
-		String sql= "SELECT * FROM item inner join maker ON item.item_maker = maker.id inner join cate ON  item.item_cate = cate.id  WHERE item.id = ? ";
+		String sql= "SELECT *,count(vote=1 or null) as upvote , count(vote=-1 or null) as downvote FROM item inner join maker ON item.item_maker = maker.id inner join cate ON  item.item_cate = cate.id "
+				+ " left join  review on item.id = review.item_id  WHERE item.id = ? group by item.id ";
 
 		try {
 			PreparedStatement pst = cone.prepareStatement(sql);
@@ -352,8 +358,11 @@ return null;
                 int maker_id=rs.getInt("item_maker");
 
 
+
                 ItemBeans item = new ItemBeans(id, item_name ,cate_id, item_cate ,maker_id, item_maker , item_price , item_pic , item_date , item_price_down);
 
+                item.setUpvote(rs.getInt("upvote"));
+                item.setDownvote(rs.getInt("downvote"));
                 itemList.add(item);
 
 			}

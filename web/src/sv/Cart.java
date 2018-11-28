@@ -31,14 +31,26 @@ public class Cart extends HttpServlet {
 
 		//カートの中身全部足したい
 		ArrayList<ItemBeans> IL = (ArrayList<ItemBeans>) se.getAttribute("cart");
-	    System.out.println("IL" + IL);
-		if(IL != null) {
+		System.out.println("IL :" + IL);
+
+
+		//中身入ってる時
+		if(IL !=null) {
+			if(IL.isEmpty()) {
+				request.setAttribute("items", "0");
+			}
+			else {
 		int total = sc.getTotal(IL);
-		se.setAttribute("total", total);
-	    }
-		else {
+		request.setAttribute("total", total);
 		request.setAttribute("items", "1");
+	    }
 		}
+
+		else {
+		//中身入ってない時
+		request.setAttribute("items", "0");
+		}
+
 		se.setAttribute("deliList", deliList);
 		request.getRequestDispatcher(sc.CART).forward(request, response);
 
@@ -70,7 +82,12 @@ public class Cart extends HttpServlet {
 			}
 		}
 		request.setAttribute("notice", "選択した商品を削除しました");
-
+		if(cart.isEmpty()) {
+			request.setAttribute("items", "0");
+		}else {
+			request.setAttribute("items", "1");
+		}
+		se.setAttribute("cart", cart);
 
 		}
 

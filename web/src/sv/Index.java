@@ -19,21 +19,11 @@ import dao.ItemDAO;
 /**
  * Servlet implementation class index
  */
-@WebServlet("/index")
-public class index extends HttpServlet {
+@WebServlet("/Index")
+public class Index extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public index() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession se = request.getSession();
 

@@ -40,7 +40,7 @@ public class Logincheck extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String loginID =request.getParameter("loginID");
-		String password = request.getParameter("password");
+		String password = sc.encrypt(request.getParameter("password"));
 
 		//DBで照会
 		UserDAO ud = new UserDAO();
@@ -70,7 +70,7 @@ public class Logincheck extends HttpServlet {
 			se.removeAttribute("returnURL");
 		}
 		else {
-			response.sendRedirect("index");
+			response.sendRedirect("Index");
 		}
 
 	}

@@ -84,15 +84,18 @@ ${notice}
 
 <c:if test="${revs!=null}">
 <select onChange="top.location.href=value">
-<option value="SortReview?sort=1&id=${thisItem.id}" <c:if test="${sort2==1}"> selected="selected"</c:if>> 新着順</option>
-<option value="SortReview?sort=2&id=${thisItem.id}"<c:if test="${sort2==2}"> selected="selected"</c:if>>評価順</option>
+<option value="UItemDetail?sort=1&id=${thisItem.id}" <c:if test="${sort2==1}"> selected="selected"</c:if>> 新着順</option>
+<option value="UItemDetail?sort=2&id=${thisItem.id}"<c:if test="${sort2==2}"> selected="selected"</c:if>>評価順</option>
 </select>
 </c:if>
 <br>
 
 <c:forEach var="c" items="${revs}">
+<!-- ここからレビュー -->
+<c:if test="${!empty c.review }">
 		<div class="row border bg-light waku2 mx-auto mb-3">
 		<div class="col-sm-1">
+
 		<c:if test="${c.vote==1}"><div class="mx-auto"><img src=img/upvote.png></div></c:if>
 		<c:if test="${c.vote==-1}"><div class="mx-auto"><img src=img/downvote.png></div></c:if>
 		</div>
@@ -108,14 +111,26 @@ ${notice}
 			 <input type="submit" class="btn btn-secondary" value="削除"onclick="return confirm('本当に削除してよろしいですか？');">
 			 </c:if>
 
+<!-- ログインしていてかつ自分のレビューじゃない場合 -->
 			<c:if test="${c.user_id != userInfo.id and userInfo!=null}">
 			このレビューは参考になりましたか？
+
 	<div class="btn-group btn-group-toggle" data-toggle="buttons">
-  <label class="btn btn-secondary <c:if test="${recheck==1}">active</c:if>">
-    <input type="radio" name="options"  onChange=location.href="Rereview?vote=1&recheck=${recheck}&id=${c.id}&idd=${c.item_id}"  autocomplete="off"> はい
+	<!-- このレビューを評価しててかつ高評価入れてたらactiveにする -->
+  <label class="btn btn-secondary
+<c:forEach var="r" items="${recheck}">
+<c:if test="${c.id == r.review_id and r.vote==1}"> active </c:if>
+</c:forEach>
+  ">
+    <input type="radio" name="options"  onChange=location.href="Rereview?vote=1<c:forEach var="r" items="${recheck}"><c:if test="${c.id == r.review_id}">&recheck=${r.vote}</c:if></c:forEach>&id=${c.id}&idd=${c.item_id}"  autocomplete="off"> はい
   </label>
-  <label class="btn btn-secondary <c:if test="${recheck==-1}">active</c:if>">
-    <input type="radio" name="options"  onChange=location.href="Rereview?vote=-1&recheck=${recheck}&id=${c.id}&idd=${c.item_id}" autocomplete="off"  > いいえ
+
+    <label class="btn btn-secondary
+<c:forEach var="r" items="${recheck}">
+<c:if test="${c.id == r.review_id and r.vote==-1}"> active</c:if>
+</c:forEach>
+  ">
+    <input type="radio" name="options"  onChange=location.href="Rereview?vote=-1<c:forEach var="r" items="${recheck}"><c:if test="${c.id == r.review_id}">&recheck=${r.vote}</c:if></c:forEach>&id=${c.id}&idd=${c.item_id}"  autocomplete="off"> いいえ
   </label>
 </div>
 			  </c:if>
@@ -124,8 +139,8 @@ ${notice}
 			 </div>
 			</div>
 		</div>
-
-
+		<!-- ここまでレビュー -->
+</c:if>
 </c:forEach>
 		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="AddCart?id=${thisItem.id}">カートに入れる</button>
 		<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick="history.back()">戻る</button>

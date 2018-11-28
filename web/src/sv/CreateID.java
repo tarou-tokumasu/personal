@@ -43,8 +43,8 @@ public class CreateID extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String login_ID = request.getParameter("login_ID");
 		String user_name =request.getParameter("user_name");
-		String password = request.getParameter("password");
-		String kakunin = request.getParameter("kakunin");
+		String password = sc.encrypt(request.getParameter("password"));
+		String kakunin =  sc.encrypt(request.getParameter("kakunin"));
 		String birth_date = request.getParameter("birth_date");
 		String address = request.getParameter("address");
 		Date create_date = new Date();

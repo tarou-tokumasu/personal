@@ -1,6 +1,12 @@
 package sv;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+
+import javax.xml.bind.DatatypeConverter;
 
 import beans.ItemBeans;
 
@@ -56,18 +62,38 @@ public class sc {
 
 	public static final String REVIEW_FIN ="/WEB-INF/jsp/reviewfin.jsp";
 
+	public static final String MYLIST ="/WEB-INF/jsp/mylist.jsp";
+
 	//便利メソッド
 
 	//カート内全部足す
 	public static int getTotal(ArrayList<ItemBeans> iL) {
-
 		int total=0;
 
 		for(ItemBeans a : iL) {
 			total+= a.getitem_pricez();
 		}
-
 		return total;
+	}
+
+	public static String encrypt(String password) {
+
+		//ハッシュ生成前にバイト配列に置き換える際のCharset
+		Charset charset = StandardCharsets.UTF_8;
+		//ハッシュアルゴリズム
+		String algorithm = "MD5";
+
+		//ハッシュ生成処理
+		byte[] bytes;
+		try {
+			bytes = MessageDigest.getInstance(algorithm).digest(password.getBytes(charset));
+			String result = DatatypeConverter.printHexBinary(bytes);
+			return result;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+			return null;
 	}
 
 

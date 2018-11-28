@@ -34,9 +34,13 @@ public class Rereview extends HttpServlet {
 		HttpSession se = request.getSession();
 
 		String item_id = request.getParameter("idd");
+		//評価　+1か-1だけ入る
 		int vote = Integer.parseInt(request.getParameter("vote"));
 		String review = request.getParameter("id");
-		int recheck = Integer.parseInt(request.getParameter("recheck"));
+		//既にレビュー評価してたかのチェック
+		int recheck = (request.getParameter("recheck") == null) ? 0: Integer.parseInt(request.getParameter("recheck"));
+
+
 		UserBeans user = (UserBeans) se.getAttribute("userInfo");
 
 		//既に評価しててまた同じ奴にしたらdelete(0に戻す) 違ったらupdate 新規はinsert

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.ItemBeans;
+import beans.ReReviewBeans;
 import beans.ReviewBeans;
 import beans.UserBeans;
 import dao.BuyDAO;
@@ -38,7 +39,7 @@ public class UItemDetail extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession se = request.getSession();
 
-		//データ貰う
+		//ユーザーデータ貰う
 		UserBeans user = (UserBeans) se.getAttribute("userInfo");
 		String idd =request.getParameter("id");
 		//参照先のデータを取得
@@ -52,17 +53,39 @@ public class UItemDetail extends HttpServlet {
 		request.setAttribute("rev", rev);
 		}
 
-		//レビュー表示用
+		//レビュー情報の全てを取得
+		//
+
 		List<ReviewBeans> revs = ReviewDAO.getReviewByID(idd);
+
+		//ソート番号は?未指定だったら新着
+		String sort = (request.getParameter("sort")==null)? "1" : request.getParameter("sort");
+		int sort2 = Integer.parseInt(sort);
+
+		if(revs!=null) {
+		switch(sort2) {
+
+		case 1://新着
+			revs.sort((b,a)-> (int)(a.getRe_date().getTime() - b.getRe_date().getTime()) );
+			break;
+		case 2://評価順
+			revs.sort((b,a)-> a.getRe_vote() - b.getRe_vote()) ;
+			break;
+		}
+		se.setAttribute("sort2", sort2);
+		}
+
+
 		se.setAttribute("revs", revs);
 		//商品評価獲得用
 		ItemBeans revote = ItemDAO.getVote(idd);
 		request.setAttribute("revote", revote);
+
 		//レビューを評価したかチェック用
 		if(user!=null) {
-		int recheck = ReviewDAO.checkRerev(user.getId() , idd);
-		System.out.println(recheck);
-
+			//これだとレビューが複数あった時に対応できない！
+		//int recheck = ReviewDAO.checkRerev(user.getId() , idd);
+		List<ReReviewBeans> recheck = ReviewDAO.checkRerev(user.getId());
 		request.setAttribute("recheck", recheck);
 		}
 
