@@ -50,7 +50,7 @@ public class UserList extends HttpServlet {
 					request.setAttribute("userList", userList);
 				request.getRequestDispatcher(sc.USER_LIST).forward(request, response);}
 				else {
-					response.sendRedirect("index");
+					response.sendRedirect("Index");
 				}
 	}
 
@@ -58,7 +58,7 @@ public class UserList extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO:検索処理全般
+		// TODO:検索処理　後回しでいいのでgetでできるように
 		request.setCharacterEncoding("UTF-8");
 	//3（4）つの条件で検索　空欄だったらスルー　入ってたら whereの後に詰め込む条件文付け足していく
 	//ただしsince until片方の入力だったらbetween使わないやつになる

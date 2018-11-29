@@ -24,10 +24,7 @@ public class CreateID extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreateID() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

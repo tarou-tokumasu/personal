@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import beans.BuyDataBeans;
 import beans.UserBeans;
 import dao.BuyDAO;
+import dao.UserDAO;
 
 /**
  * Servlet implementation class UUserDetail
@@ -31,11 +32,38 @@ public class UUserDetail extends HttpServlet {
 		//ログインチェック
 		HttpSession se = request.getSession();
 		UserBeans user =(UserBeans) se.getAttribute("userInfo");
+		String id = request.getParameter("id");
 
-		if(user==null) {
-			response.sendRedirect("Login");
+		//TODO:今はログインセッションに入ってるユーザーデータ取ってるが管理画面から来た時はそのユーザーの情報を投げる
+		//管理者チェック
+		if(user!=null && user.getId()==1 && id!=null) {
+			UserBeans u = UserDAO.searchID(id);
+			se.setAttribute("user2", u);
+
+			List<BuyDataBeans> bd =  BuyDAO.searchMyBuy(u.getId());
+			se.setAttribute("myDB", bd);
+
+			//今何ページ目かをURLから引っ張り出す
+			int page = Integer.parseInt(request.getParameter("page") == null ? "1": request.getParameter("page"));
+
+			//履歴いくつある？
+			double size = bd.size();
+
+			//いくつページいる？
+			int max = (int)Math.ceil(size / sc.ITEMS);
+
+			request.setAttribute("items", sc.ITEMS);
+			request.setAttribute("max", max);
+			request.setAttribute("page", page);
+
+
+		request.getRequestDispatcher(sc.USER_DETAIL).forward(request, response);
 		}
-		System.out.println(user.getId());
+
+		else if(user==null) {
+			response.sendRedirect("Login");
+		}else {
+
 
 		//ユーザーIDを基に購入履歴出す
 		List<BuyDataBeans> bd =  BuyDAO.searchMyBuy(user.getId());
@@ -57,7 +85,7 @@ public class UUserDetail extends HttpServlet {
 
 	request.getRequestDispatcher(sc.USER_DETAIL).forward(request, response);
 	}
-
+	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

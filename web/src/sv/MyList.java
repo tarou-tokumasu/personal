@@ -1,6 +1,7 @@
 package sv;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.ItemBeans;
 import beans.MyListB;
 import beans.UserBeans;
+import dao.ItemDAO;
 import dao.MyListDAO;
 
 /**
@@ -38,13 +41,16 @@ public class MyList extends HttpServlet {
 		UserBeans user = (UserBeans) se.getAttribute("userInfo");
 
 		List<MyListB> mylist = MyListDAO.getMyList(user.getId());
-		System.out.println("mylist:"+ mylist);
+
 		if(mylist==null) {
 			request.setAttribute("items", "0");
 		}
 		if(mylist!=null) {
 			if(mylist.isEmpty()) { //分けないとぬるぽで詰まる
 			request.setAttribute("items", "0");
+			}
+			else {
+			request.setAttribute("items", "1");
 			}
 		}
 		se.setAttribute("mylist", mylist);
@@ -59,13 +65,24 @@ public class MyList extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//チェック商品の削除 or カートに追加
 		HttpSession se = request.getSession();
+		UserBeans user = (UserBeans) se.getAttribute("userInfo");
 
 		List<MyListB> mylist = (List<MyListB>) se.getAttribute("mylist");
 
 		String [] dlist = request.getParameterValues("delete");
 
+		//ゲッパラでいなかった時はエラー起きない
+		//equalとかでnullだったらアウト？
+
+		if(request.getParameter("action")!= null) {
+
 		//ここから削除パート
 		if(request.getParameter("action").equals("del")) {
+
+			if(dlist==null) {
+				request.setAttribute("Err", "チェックされていません");
+			}
+			else {
 			for(String dl : dlist) {
 				for(MyListB ml : mylist) {
 					if(ml.getId()==Integer.parseInt(dl)) {
@@ -83,14 +100,47 @@ public class MyList extends HttpServlet {
 			}else {
 				request.setAttribute("items", "1");
 			}
-			se.setAttribute("mylist", mylist);
+			request.setAttribute("notice", "チェックされた商品の削除が完了しました");
+			}
 		}//削除パート終わり
 
+		if(request.getParameter("action").equals("cart")) {
+			if(dlist==null) {
+				request.setAttribute("Err", "チェックされていません");
+			}
+			else {
 
-		//カートに追加
-		if(request.getParameter("action").equals("cart")) {}
+				ArrayList<ItemBeans> cart = (ArrayList<ItemBeans>) se.getAttribute("cart");
 
-		request.getRequestDispatcher(sc.MYLIST).forward(request, response);
+				//カートがないなら作る
+				if(cart==null) {
+					cart = new  ArrayList<ItemBeans>();
+				}
+
+				for(String dl : dlist) {
+					for(MyListB ml : mylist) {
+						if(ml.getId()==Integer.parseInt(dl)) {
+							mylist.remove(ml);
+							//カートと違ってセッションだけじゃなくDBの方も消さないといけない
+							MyListDAO.deleteByID(ml.getId());
+							//カートに追加する
+							ItemBeans item = ItemDAO.searchID(String.valueOf(ml.getItem_id()));
+							System.out.println(item);
+							cart.add(item);
+							break;//追加完了したらもう残りを探す必要がないので
+						}
+					}
+				}
+				request.setAttribute("notice", "チェックされた商品をカートに追加しました");
+				se.setAttribute("cart", cart);
+			}
+		}//カートに追加ここまで
+
+		}
+
+		se.setAttribute("mylist", mylist);
+
+		doGet(request, response);
 	}
 
 }

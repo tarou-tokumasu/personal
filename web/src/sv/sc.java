@@ -64,6 +64,8 @@ public class sc {
 
 	public static final String MYLIST ="/WEB-INF/jsp/mylist.jsp";
 
+	public static final String AD_SALES = "/WEB-INF/jsp/ad_uriage.jsp";
+
 	//便利メソッド
 
 	//カート内全部足す

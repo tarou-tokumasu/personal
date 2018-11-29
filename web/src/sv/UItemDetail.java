@@ -16,6 +16,7 @@ import beans.ReviewBeans;
 import beans.UserBeans;
 import dao.BuyDAO;
 import dao.ItemDAO;
+import dao.MyListDAO;
 import dao.ReviewDAO;
 
 /**
@@ -98,12 +99,36 @@ public class UItemDetail extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//レビュー削除
+		HttpSession se = request.getSession();
+
+		//ユーザーデータ貰う
+		UserBeans user = (UserBeans) se.getAttribute("userInfo");
+
 		String id = request.getParameter("id");
 		String idd = request.getParameter("idd");
-		ReviewDAO.deleteReview(id);
+		String action = request.getParameter("action");
 
-		response.sendRedirect("UItemDetail?id=" + idd);
+
+		if(action.equals("del")) {
+		ReviewDAO.deleteReview(id);
+		}
+
+		if(action.equals("add")) {
+		boolean check = MyListDAO.addItem(id,user.getId());
+		if(!check) {
+		request.setAttribute("Err", "すでに登録されている商品です");
+		}
+		else {
+		request.setAttribute("Notice", "マイリストに追加しました");
+		}
+		}
+
+		//見栄えはまあいいがurl欠けてるので更新でアウト
+		//jspのform actionの所で末尾に設定すればok
+		doGet(request,response);
+//商品id持ち込めなくて画面がぐちゃる		request.getRequestDispatcher(sc.ITEM_DETAIL).forward(request, response);
+//リクエストスコープ持ち込めない		response.sendRedirect("UItemDetail?id=" + id);
+
 	}
 
 }

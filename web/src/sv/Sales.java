@@ -1,6 +1,7 @@
 package sv;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,47 +10,41 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import beans.ItemBeans;
+import beans.SalesB;
 import beans.UserBeans;
-import dao.ItemDAO;
+import dao.SalesDAO;
 
 /**
- * Servlet implementation class ItemDetail
+ * Servlet implementation class Sales
  */
-@WebServlet("/ItemDetail")
-public class ItemDetail extends HttpServlet {
+@WebServlet("/Sales")
+public class Sales extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-
+    public Sales() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//管理者限定メニューチェッカー
-				HttpSession se = request.getSession();
-				UserBeans user =(UserBeans) se.getAttribute("userInfo");
+		HttpSession se = request.getSession();
 
-				//そもそもログインしてない
-				if(user==null) {
-					response.sendRedirect("Login");
-				}
-				//adminかどうかチェック
-				else if(user.getLogin_id().equals("admin")) {
+		UserBeans user = (UserBeans) se.getAttribute("userInfo");
+		if(user==null) {
+			response.sendRedirect("Index");
+		}
+		else {
+			List<SalesB> salelist = SalesDAO.getSales();
+			se.setAttribute("sales", salelist);
 
-					String idd =request.getParameter("id");
-					//参照先のデータを参照
-					ItemDAO id = new ItemDAO();
-
-					ItemBeans i = id.searchID(idd);
-					request.setAttribute("thisItem", i);
-				request.getRequestDispatcher(sc.AD_ITEM_DETAIL).forward(request, response);}
-				else {
-					response.sendRedirect("index");
-				}
+			request.getRequestDispatcher(sc.AD_SALES).forward(request, response);
+		}
 	}
 
 	/**

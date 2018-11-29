@@ -42,7 +42,21 @@
       </c:if>
     </div>
 <div class="container">
+
+<c:if test="${Err !=null}">
+<div class="alert alert-danger" role="alert">
+${Err}
+</div>
+</c:if>
+
+<c:if test="${notice !=null}">
+<div class="alert alert-success" role="alert">
+${notice}
+</div>
+</c:if>
+
 <div class="jumbotron">
+
 <h5 class="text-center mb-3">マイリスト</h5>
 
 <form class="mb-2" action ="MyList" method="post"> <!-- リストから削除 or カートに追加 -->

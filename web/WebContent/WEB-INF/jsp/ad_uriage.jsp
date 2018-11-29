@@ -5,7 +5,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-    <title>メイン画面</title>
+    <title>売上画面</title>
     <!-- BootstrapのCSS読み込み -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery読み込み -->
@@ -43,90 +43,30 @@
     </div>
 <div class="container">
 
-<c:if test="${Err !=null}">
-<div class="alert alert-danger" role="alert">
-${Err}
-</div>
-</c:if>
-
-<c:if test="${notice !=null}">
-<div class="alert alert-success" role="alert">
-${notice}
-</div>
-</c:if>
-
 <div class="jumbotron">
-<h5 class="text-center mt-3 mb-3">カート</h5>
-<table class="table">
+<h5 class="text-center mb-3">売上データ</h5>
+
+    <table class="table">
   <thead class="thead-dark">
     <tr class="text-center">
-      <th>商品名</th>
-      <th>値段</th>
-      <th></th>
+      <th>販売日</th>
+      <th>売上</th>
     </tr>
-  </thead>
-   <tbody><form action="Cart" method="post">
-  <c:forEach var="c" items="${cart}">
+    </thead>
 
+  <tbody>
+  <c:forEach var="c" items="${sales}">
     <tr>
-      <td>${c.item_name}</td>
-      <td class="text-center">
-      <c:choose>
-    <c:when test="${c.item_price_down ==0 }">${c.item_pricec} </c:when>
-     <c:when test="${c.item_price_down !=0 }"><s>${c.item_pricec}</s>${c.item_pricew} </c:when>
-    </c:choose>
-
-   <c:if test="${c.item_price_down !=0 }"> <font color="red">${c.item_price_down}%off</font> </c:if>
-
-      </td>
-      <td class="text-right">
- <input type="checkbox" value="${c.id}" name="delete">削除
-	</td>
+      <td class="text-center">${c.date}</td>
+      <td class="text-right">${c.salesc}</td>
     </tr>
- </c:forEach>
-    </td></tr>
-
- <tr></tr>
-<c:if test="${items==1}">
-   <tr>
-   <td class="">小計</td>
-   <td class="text-center">￥${total}</td>
-   <td class="center"></td>
-</tr>
-</c:if>
-<c:if test="${items==0}">
-   <tr>
-   <td class="">カートに商品が入っていません</td>
-</tr>
-</c:if>
-
-
-<c:if test="${userInfo!=null and items==1}">
-<tr> <td></td><td></td><td class="text-right">
-    <select name="deli">
-   <c:forEach var="d" items="${deliList}">
-   <option value="${d.id}">
-   ${d.deli_name} ￥${d.deli_price}
-   </option>
-   </c:forEach>
-   </select>
-</td></tr>
-<tr> <td></td><td></td><td class="text-right">
-   現在所持ポイント: ${userInfo.point} <input type="text" name="point" placeholder="1P=1円の値引き">
-</td></tr>
-</c:if>
+    </c:forEach>
    </tbody>
-
-    </table>
-
+</table>
+</div>
+ <button class="mt-3 btn  btn-secondary form-control" type="submit" onClick=location.href="Ad_Menu">戻る</button>
 
     </div>
-  <c:if test="${items==1}">
-    <button class="mt-3 btn  btn-secondary form-control" type="submit" name="action" value="doDel">チェックされた商品を削除</button>
-	<button class="mt-3 btn  btn-secondary form-control" type="submit" name="action" value="doRegi">レジへ進む（要ログイン）</button>
-</c:if>
-	</form>
-	<button class="mt-3 btn  btn-secondary form-control" type="submit" onClick="history.go(-2)">戻る</button>
-</div>
+
 </body>
 </html>

@@ -46,6 +46,7 @@ public class Regi extends HttpServlet {
 		int delip = deli.getDeli_price();
 
 
+		System.out.println(se.getAttribute("total") + "です");
 		int total2 = (poin != 0) ?
 		(int) se.getAttribute("total") + delip - poin :
 	    (int) se.getAttribute("total") + delip;

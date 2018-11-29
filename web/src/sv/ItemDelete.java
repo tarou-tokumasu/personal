@@ -23,10 +23,6 @@ public class ItemDelete extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ItemDelete() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

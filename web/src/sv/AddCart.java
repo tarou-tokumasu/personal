@@ -40,8 +40,6 @@ public class AddCart extends HttpServlet {
 
 		//DAOのメソッドをstatic化する事でDAO宣言略せる
 		ItemBeans item = id.searchID(idd);
-		System.out.println("itembeans" + item);
-
 		//これはtryで囲っておいた方がいい？
 		ArrayList<ItemBeans> cart = (ArrayList<ItemBeans>) se.getAttribute("cart");
 
@@ -59,6 +57,7 @@ public class AddCart extends HttpServlet {
 
 		response.sendRedirect("Cart");
 
+		//TODO:マイリストに入ってる商品をマイリストからではなく商品ぺージからカートに追加した時マイリストのデータを消す（わかりづらい）
 
 	}
 

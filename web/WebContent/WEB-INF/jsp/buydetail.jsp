@@ -16,7 +16,7 @@
 	</head>
 <body class="backg">
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-light border-bottom shadow-sm">
-     <h5 class="my-0 mr-md-auto font-weight-normal"> <a  class="text-dark" link href="index">ECサイト</a></h5>
+     <h5 class="my-0 mr-md-auto font-weight-normal"> <a  class="text-dark" link href="Index">ECサイト</a></h5>
       <nav class="my-2 my-md-0 mr-md-3">
       <c:if test="${userInfo !=null}">
         <a class="p-2">${userInfo.user_name} さん</a>
@@ -27,12 +27,12 @@
 		<c:if test="${userInfo.login_id=='admin'}">
         <a class="p-2 text-dark" link href="Ad_Menu">管理者メニュー</a>
         </c:if>
-       <a class="text-dark" link href="ranking.html">ランキング</a>
+       <a class="text-dark" link href="Ranking">ランキング</a>
        <c:if test="${userInfo!=null}">
         <a class="p-2 text-dark" link href="UUserDetail">ユーザー情報</a>
+         <a class="p-2 text-dark"  link href="MyList">マイリスト</a>
         </c:if>
          <a class="p-2 text-dark" link href="Cart">カートの確認</a>
-        <a class="p-2 text-dark"  link href="mylist.html">マイリスト</a>
       </nav>
       <c:if test="${userInfo !=null}">
       <a  class="text-danger" link href="LogOut">ログアウト</a>

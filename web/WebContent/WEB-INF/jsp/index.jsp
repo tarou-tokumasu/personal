@@ -60,12 +60,12 @@
     </div>
     <div class="carousel-item">
 
-   <a link href="">
+   <a link href="SearchItem?item_name=&item_cate=2&item_maker=&since=&until=">
       <img class="d-block w-100" src="img/smartphone_neru_boy2.png" alt="Second slide">
-    </button>
+    </a>
     </div>
     <div class="carousel-item">
-    <a link href="search.html">
+    <a link href="SearchItem?item_name=&item_cate=&item_maker=1&since=&until=">
       <img class="d-block w-100" src="img/smartphone_neru_boy3.png" alt="Third slide">
       </a>
     </div>
@@ -83,7 +83,7 @@
 
 <div class="row">
   <div class="col-sm-3">
-  <form action="SearchItem" method="post">
+  <form action="SearchItem" method="get">
   <input type="text" class="form-control mb-3" name="item_name" placeholder="商品名">
       <select class="mb-3 form-control" name="item_cate">
       <option value="">カテゴリーを選択</option>
@@ -108,7 +108,7 @@
 
   <div class="col-sm-9 ">
 
- <a class="text-dark" link href="SearchItem?sort=4"><h5>割引中</h5></a>
+ <a class="text-dark" link href="SearchItem?item_name=&item_cate=&item_maker=&since=&until=&sort=6"><h5>割引中</h5></a>
  <div class="row">
 
  <c:forEach var="n" items="${saleList}">
@@ -138,7 +138,7 @@
 
 
 
-   <a class="text-dark mt-5" link href="SearchItem?sort=1"><h5>新作</h5></a>
+   <a class="text-dark mt-5" link href="SearchItem?item_name=&item_cate=&item_maker=&since=&until=&sort=1"><h5>新作</h5></a>
  <div class="row mb-4">
 
  <c:forEach var="n" items="${newList}">

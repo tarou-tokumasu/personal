@@ -22,10 +22,7 @@ public class BuyResult extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BuyResult() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

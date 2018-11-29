@@ -66,8 +66,11 @@ public class UserUpdate extends HttpServlet {
 		String id = request.getParameter("ID");
 		String login_ID = request.getParameter("login_ID");
 		String user_name =request.getParameter("user_name");
-		String password = sc.encrypt(request.getParameter("password"));
-		String kakunin =  sc.encrypt(request.getParameter("kakunin"));
+		//暗号化は空欄でも変換されてしまうのでここではまだ早い
+//		String password = sc.encrypt(request.getParameter("password"));
+//		String kakunin =  sc.encrypt(request.getParameter("kakunin"));
+		String password = request.getParameter("password");
+		String kakunin =  request.getParameter("kakunin");
 		String birth_date = request.getParameter("birth_date");
 		String address = request.getParameter("address");
 		Date update_date = new Date();
@@ -84,13 +87,16 @@ public class UserUpdate extends HttpServlet {
 		}
 		else if(password!="" && kakunin!="") { //中身が入ってるなら
 		//パス更新
+			password= sc.encrypt(password);
 			ud.UpdatePassword(login_ID,password);
 		}
 
 		//ユーザー情報更新
 		ud.UpdateUser(login_ID , user_name,birth_date,address,sdf1.format(update_date));
 		//セッションも更新
-		UserBeans uinfo = UserDAO.searchID(id);
+
+		UserBeans uinfo = (UserBeans) se.getAttribute("userInfo");
+		uinfo = UserDAO.searchID(String.valueOf(uinfo.getId()));
 		se.setAttribute("userInfo",uinfo );
 
 

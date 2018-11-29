@@ -90,4 +90,44 @@ public class MyListDAO {
 		}
 
 	}
+
+	public static boolean addItem(String id, int id2) {
+		Connection cone = DBManager.getConnection();
+
+		//重複チェック用
+		String sql= "select * from mylist WHERE item_id = ? AND user_id = ?";
+
+		String sql2= "INSERT INTO mylist (item_id , user_id ) values(? , ?)";
+
+		try {
+			PreparedStatement pst = cone.prepareStatement(sql);
+			pst.setString(1, id);
+			pst.setInt(2, id2);
+			ResultSet rs = pst.executeQuery();
+
+			if(!rs.next()) {
+				pst = cone.prepareStatement(sql2);
+				pst.setString(1, id);
+				pst.setInt(2, id2);
+				pst.executeUpdate();
+					System.out.println("登録成功！");
+					return true;
+
+			}
+			System.out.println("マイリスト：重複！");
+			return false;
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}finally {
+			try {
+				cone.close();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 }

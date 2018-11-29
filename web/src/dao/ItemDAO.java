@@ -19,7 +19,7 @@ public class ItemDAO {
 
 
 	//全商品取得
-	public List<ItemBeans> getAllItem(){
+	public static List<ItemBeans> getAllItem(){
 
 		ArrayList<ItemBeans> itemList = new ArrayList<ItemBeans>();
 
@@ -77,7 +77,7 @@ public class ItemDAO {
 		return itemList;
 	}
 
-	public ItemBeans searchID(String idd) {
+	public static ItemBeans searchID(String idd) {
 		Connection cone = null;
 		cone = DBManager.getConnection();
 
@@ -334,7 +334,7 @@ return null;
 
 	}
 
-	public List<ItemBeans> getALLItem(String sql2) {
+	public static List<ItemBeans> getALLItem(String sql2) {
 		ArrayList<ItemBeans> itemList = new ArrayList<ItemBeans>();
 
 		Connection cone = null;

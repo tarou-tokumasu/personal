@@ -41,7 +41,7 @@ public class Cart extends HttpServlet {
 			}
 			else {
 		int total = sc.getTotal(IL);
-		request.setAttribute("total", total);
+		se.setAttribute("total", total);
 		request.setAttribute("items", "1");
 	    }
 		}
@@ -95,12 +95,12 @@ public class Cart extends HttpServlet {
 		request.setAttribute("Err", "商品が選択されていません");
 				}
 
-		request.getRequestDispatcher(sc.CART).forward(request, response);
+		doGet(request,response);
 		}
 
 		if(request.getParameter("action").equals("doRegi")) {
-			String deli = request.getParameter("deli");
 
+			String deli = request.getParameter("deli");
 
 			//jspのほうで表示させてない時はnullで表示させた上で空欄だと""になる
 			String poin = request.getParameter("point");
@@ -113,7 +113,7 @@ public class Cart extends HttpServlet {
 
 			if(point>mypoint) {
 				request.setAttribute("Err", "手持ちのポイントをオーバーしています");
-				request.getRequestDispatcher(sc.CART).forward(request, response);
+				doGet(request, response);
 			}
 			else {
 			se.setAttribute("point", point);

@@ -93,6 +93,8 @@ public class Bought extends HttpServlet {
 		se.removeAttribute("deli");
 
 		//リダレ
+
+		se.setAttribute("point2", point2);
 		response.sendRedirect("BuyResult");
 	}
 
