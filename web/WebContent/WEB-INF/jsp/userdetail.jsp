@@ -55,9 +55,9 @@
   </thead>
   <tbody>
     <tr class="text-center">
-      <td>${userInfo.address}</td>
-      <td>${userInfo.formatBirthDate}</td>
-      <td>${userInfo.point}</td>
+      <td>${user2.address}</td>
+      <td>${user2.formatBirthDate}</td>
+      <td>${user2.point}</td>
     </tr>
     </table>
     <a class="text-muted " link href="UserUpdate?id=${userInfo.id}&return=UUserDetail">更新する</a>

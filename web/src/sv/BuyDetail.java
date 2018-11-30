@@ -36,13 +36,17 @@ public class BuyDetail extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
+//自分のか管理者目線かの違いを
 		HttpSession se = request.getSession();
 
+		UserBeans user2 =(UserBeans) se.getAttribute("user2");
 		UserBeans user =(UserBeans) se.getAttribute("userInfo");
 		String id = request.getParameter("id");
 
-		BuyDataBeans bd =  BuyDAO.searchMyBuy(user.getId(),id);
+
+		BuyDataBeans bd = (user2==null) ? BuyDAO.searchMyBuy(user.getId(),id):
+			 BuyDAO.searchMyBuy(user2.getId(),id);
+
 		List<BuyDetailBeans> bbd = BuyDetailDAO.getDetail(id);
 
 		request.setAttribute("iDB", bd);

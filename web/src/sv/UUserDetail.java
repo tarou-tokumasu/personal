@@ -34,7 +34,8 @@ public class UUserDetail extends HttpServlet {
 		UserBeans user =(UserBeans) se.getAttribute("userInfo");
 		String id = request.getParameter("id");
 
-		//TODO:今はログインセッションに入ってるユーザーデータ取ってるが管理画面から来た時はそのユーザーの情報を投げる
+		System.out.println(id);
+		//
 		//管理者チェック
 		if(user!=null && user.getId()==1 && id!=null) {
 			UserBeans u = UserDAO.searchID(id);
@@ -57,12 +58,14 @@ public class UUserDetail extends HttpServlet {
 			request.setAttribute("page", page);
 
 
-		request.getRequestDispatcher(sc.USER_DETAIL).forward(request, response);
+			request.getRequestDispatcher(sc.USER_DETAIL).forward(request, response);
 		}
 
 		else if(user==null) {
 			response.sendRedirect("Login");
-		}else {
+		}else {//自分のid
+		UserBeans u = UserDAO.searchID(String.valueOf(user.getId()));
+		se.setAttribute("user2", u);
 
 
 		//ユーザーIDを基に購入履歴出す

@@ -85,7 +85,7 @@
       <td>${u.address }</td>
       <td class="text-right">${u.point}</td>
       <td class="text-center">
-       <button class="btn  btn-secondary" type="submit" onClick=location.href="UserDetail?id=${u.id}">詳細</button>
+       <button class="btn  btn-secondary" type="submit" onClick=location.href="UUserDetail?id=${u.id}">詳細</button>
        <button class="btn  btn-secondary" type="submit" onClick=location.href="UserUpdate?id=${u.id}&return=UserList">更新</button>
        <button class="btn  btn-secondary" type="submit" onClick=location.href="UserDelete?id=${u.id}">削除</button>
       </td>
