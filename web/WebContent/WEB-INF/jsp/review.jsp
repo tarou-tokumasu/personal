@@ -63,10 +63,9 @@ ${notice}
 			<div class="p-2 flex-glow-1" >${thisItem.item_name}</div>
 			<div class="p-2">${thisItem.item_cate}</div>
 			<div class="p-2">${thisItem.item_maker}</div>
-			<div class="p-2">評価（未実装）
 			</div>
 
-			<div class="mt-auto p-2">
+			<div class="mt-auto text-right p-2">
 			 <c:choose>
     <c:when test="${thisItem.item_price_down ==0 }">${thisItem.item_pricec} </c:when>
      <c:when test="${thisItem.item_price_down !=0 }"><s>${thisItem.item_pricec}</s>${thisItem.item_pricew} </c:when>
@@ -74,7 +73,6 @@ ${notice}
 
    <c:if test="${thisItem.item_price_down !=0 }"> <font color="red">${thisItem.item_price_down}%off</font> </c:if>
 
-			</div>
 			</div>
 		</div>
 </div>

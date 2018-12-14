@@ -33,3 +33,7 @@ background: linear-gradient(to right, #d7d2cc, #304352); /* W3C, IE 10+/ Edge, F
 max-width: 180px;
   max-height: 180px;
 }
+
+pre{
+	font-size: 17px !important;
+}

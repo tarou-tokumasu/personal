@@ -4,10 +4,10 @@
 <html lang="jp">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
     <title>メイン画面</title>
     <!-- BootstrapのCSS読み込み -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- jQuery読み込み -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- BootstrapのJS読み込み -->
@@ -63,9 +63,9 @@ ${Notice}
 			<div class="p-2 flex-glow-1" >${thisItem.item_name}</div>
 			<div class="p-2">${thisItem.item_cate}</div>
 			<div class="p-2">${thisItem.item_maker}</div>
-			<c:if test="${revote.upvote>0 or revote.downvote<0 }"><div class="p-2"><b class="text-success">↑${revote.upvote}</b> / <b class="text-danger">${revote.downvote}↓</b>
+			<c:if test="${revote.upvote > 0 or revote.downvote > 0 }"><div class="p-2"><b class="text-success">↑${revote.upvote}</b> / <b class="text-danger">${revote.downvote}↓</b>
 			 <small>${revote.percent}のユーザーがこの商品を高評価しました</small></c:if>
-			 <c:if test="${revote.upvote==0}"><div class="p-2">
+			<c:if test="${revote.upvote==0 and revote.downvote==0}"><div class="p-2">
 			 <small>まだ誰もレビュー・評価をしていません。</small></c:if>
 
 			<c:if test="${rev==true}">
@@ -106,7 +106,7 @@ ${Notice}
 		<div class="col">
 		<div class="d-flex align-items-start flex-column">
 			<div class="p-2">${c.reviewer}</div>
-			<div class="p-2">${c.review }</div>
+			<pre class="p-2"><c:out value="${c.review }"/></pre>
 			<div class="p-2"><small>${c.formaDate}</small></div>
 <form  class="ml-auto" action="UItemDetail?id=${c.id}&idd=${thisItem.id}" method="post"><div class="mx-auto p-2"><b>${c.plus}</b>
 

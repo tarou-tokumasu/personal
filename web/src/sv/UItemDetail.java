@@ -59,6 +59,7 @@ public class UItemDetail extends HttpServlet {
 
 		List<ReviewBeans> revs = ReviewDAO.getReviewByID(idd);
 
+
 		//ソート番号は?未指定だったら新着
 		String sort = (request.getParameter("sort")==null)? "1" : request.getParameter("sort");
 		int sort2 = Integer.parseInt(sort);
@@ -111,6 +112,7 @@ public class UItemDetail extends HttpServlet {
 
 		if(action.equals("del")) {
 		ReviewDAO.deleteReview(id);
+		request.setAttribute("Notice", "レビューを削除しました");
 		}
 
 		if(action.equals("add")) {
@@ -123,9 +125,10 @@ public class UItemDetail extends HttpServlet {
 		}
 		}
 
+
 		//見栄えはまあいいがurl欠けてるので更新でアウト
 		//jspのform actionの所で末尾に設定すればok
-		doGet(request,response);
+		response.sendRedirect("UItemDetail?id=" + idd);
 //商品id持ち込めなくて画面がぐちゃる		request.getRequestDispatcher(sc.ITEM_DETAIL).forward(request, response);
 //リクエストスコープ持ち込めない		response.sendRedirect("UItemDetail?id=" + id);
 

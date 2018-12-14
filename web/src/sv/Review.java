@@ -72,7 +72,6 @@ public class Review extends HttpServlet {
 		int user_id = Integer.parseInt(request.getParameter("user"));
 
 		ReviewBeans re = ReviewDAO.checkRev(user_id , item_id);
-		System.out.println("レビューしてる？" + re);
 		//レビュー経験済みかチェック
 		if (re == null) {
 		ReviewDAO.addReview(vote,item_id,user_id,review);
