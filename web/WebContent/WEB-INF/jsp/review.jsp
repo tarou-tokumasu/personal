@@ -69,7 +69,7 @@ ${notice}
 			 <c:choose>
     <c:when test="${thisItem.item_price_down ==0 }">${thisItem.item_pricec} </c:when>
      <c:when test="${thisItem.item_price_down !=0 }"><s>${thisItem.item_pricec}</s>${thisItem.item_pricew} </c:when>
-    </c:choose>
+    </c:choose>b
 
    <c:if test="${thisItem.item_price_down !=0 }"> <font color="red">${thisItem.item_price_down}%off</font> </c:if>
 
