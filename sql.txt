@@ -1,0 +1,92 @@
+CREATE TABLE `buy` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(20) NOT NULL,
+  `total_price` int(11) DEFAULT NULL,
+  `deli_id` int(11) DEFAULT NULL,
+  `buy_date` datetime DEFAULT NULL,
+  `movpoint` int(11) DEFAULT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8
+
+CREATE TABLE `buy_detail` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `buy_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `l_price` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8
+
+CREATE TABLE `cate` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `cate_name` varchar(30) NOT NULL,
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `cate_name` (`cate_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+
+CREATE TABLE `deli` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `deli_name` varchar(30) NOT NULL,
+  `deli_price` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `deli_name` (`deli_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8
+
+CREATE TABLE `item` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `item_name` varchar(200) NOT NULL,
+  `item_cate` varchar(100) NOT NULL,
+  `item_maker` varchar(100) NOT NULL,
+  `item_price` int(11) NOT NULL,
+  `item_pic` varchar(200) DEFAULT NULL,
+  `item_date` date NOT NULL,
+  `item_price_down` int(11) DEFAULT NULL,
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `item_name` (`item_name`),
+  UNIQUE KEY `item_pic` (`item_pic`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8
+
+CREATE TABLE `maker` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `maker_name` varchar(200) NOT NULL,
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `maker_name` (`maker_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8
+
+CREATE TABLE `mylist` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+
+CREATE TABLE `rereview` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `review_id` int(11) NOT NULL,
+  `vote` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8
+
+CREATE TABLE `review` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `vote` int(11) NOT NULL,
+  `review` varchar(1000) NOT NULL,
+  `re_date` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8
+
+CREATE TABLE `user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `login_id` varchar(20) NOT NULL,
+  `user_name` varchar(20) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `birth_date` date NOT NULL,
+  `password` varchar(200) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  `point` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `login_id` (`login_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
